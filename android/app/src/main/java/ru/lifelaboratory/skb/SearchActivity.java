@@ -75,6 +75,9 @@ public class SearchActivity extends AppCompatActivity {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) { // Enter
                     String type = "name";
                     String whatToSearch = searchView.getText().toString();
+                    if(whatToSearch.matches("[0-9]+")) type = "code";
+                    else type = "name";
+                    
                     Item search = MainActivity.server.create(Item.class);
                     search.search(type, whatToSearch).enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
                         @Override
