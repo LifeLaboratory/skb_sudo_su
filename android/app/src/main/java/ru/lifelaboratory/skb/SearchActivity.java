@@ -24,7 +24,6 @@ import ru.lifelaboratory.skb.REST.User;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
     private TextView searchView;
     private MainListAdapter mainListAdapter = null;
     private ListView mainList = null;
@@ -36,18 +35,15 @@ public class SearchActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_main: {
-                    mTextMessage.setText(R.string.title_main);
                     Intent toMainActivity = new Intent(SearchActivity.this, MainActivity.class);
                     startActivity(toMainActivity);
                     return true;
                 }
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
                     Intent toProfileActivity = new Intent(SearchActivity.this, ProfileActivity.class);
                     startActivity(toProfileActivity);
                     return true;
                 case R.id.navigation_search:
-                    mTextMessage.setText(R.string.title_search);
                     Intent toSearchActivity = new Intent(SearchActivity.this, SearchActivity.class);
                     startActivity(toSearchActivity);
                     return true;
