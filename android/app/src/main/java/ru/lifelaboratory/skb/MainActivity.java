@@ -54,10 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        ((Button) findViewById(R.id.btn_scan)).setOnClickListener(new View.OnClickListener() {
+        (findViewById(R.id.btn_scan)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent toScan = new Intent(MainActivity.this, ScanActivity.class);
+                startActivity(toScan);
             }
         });
 

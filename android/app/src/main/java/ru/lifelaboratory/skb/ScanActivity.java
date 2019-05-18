@@ -32,9 +32,8 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 
     @Override
     public void handleResult(Result rawResult) {
-        // Do something with the result here
         Log.v("BarcodeResult", rawResult.getText()); // Prints scan results
-        mScannerView.resumeCameraPreview(this);
+        mScannerView.stopCamera();
     }
 
 }
