@@ -1,6 +1,6 @@
 # coding=utf-8
 from app.api.base import base_name as names
-from app.api.src.authentication import auth
+from app.api.src.sales import *
 from app.api.base.base_router import BaseRouter
 
 
@@ -14,9 +14,5 @@ class Sales(BaseRouter):
         args = {
             names.ID_USER: id_user
         }
-        get_sales()
+        return get_sales_user(args)
 
-    def post(self):
-        self._read_args()
-        answer = auth(self.data)
-        return answer

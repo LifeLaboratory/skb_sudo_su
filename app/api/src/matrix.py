@@ -20,13 +20,25 @@ def get_data(code):
         return None
 
     try:
-        date = soup.find(id = "ctl00_ContentPH_KeepingTime").text
+        date = soup.find(id = "ctl00_ContentPH_KeepingTime").text.lower()
         if "мес." in date:
             date =re.sub('\мес.$', '', date)  + "months"
         elif "г." in date:
             date = re.sub('\г.$','',date) + "years"
-        elif "сут.":
+        elif "сут." in date:
             date = re.sub('\сут.$','',date) + "days"
+        elif "г" in date:
+            date = re.sub('\г$','',date) + "years"
+        elif "сут" in date:
+            date = re.sub('\сут$','',date) + "days"
+        elif "дн." in date:
+            date = re.sub('\дн.$','',date) + "days"
+        elif "дн" in date:
+            date = re.sub('\дн$','',date) + "days"
+        elif "мес" in date:
+            date = re.sub('\мес$','',date) + "months"
+        elif ' ' in date:
+            date = '10 year'
     except:
         date = ""
 
@@ -96,7 +108,11 @@ def get_data(code):
     }
 
     sql_first = """INSERT INTO nomenclature("name","img","shelf_life","code")
-                   VALUES('{name}','{img}','{shelf_life}','{code}')
+                   select 
+                     '{name}',
+                     '{img}',
+                     coalesce('{shelf_life}', '10 year')::interval ,
+                     '{code}'
                    RETURNING id_nom
                    
                    
@@ -105,7 +121,7 @@ def get_data(code):
 
     id = Sql.exec(sql_first)
     if id:
-        data.update({"id":id[0].get("id_num")})
-        sql_second = """INSERT INTO description_nom("id_nom","name","img","shelf_life","code","description","gost","weight","storage_conditions","gmo","packing","energy")
-                   VALUES('{id}','{name}','{img}','{shelf_life}','{code}','{description}','{gost}','{weight}','{storage_conditions},'{gmo}'','{packing}','{energy})'""".format(**data)
+        data.update({"id":id[0].get("id_nom")})
+        sql_second = """INSERT INTO description_nom("id_nom","description","gost","weight","storage_conditions","gmo","packing","energy")
+                   VALUES('{id}','{description}','{gost}','{weight}','{storage_conditions}','{gmo}','{packing}','{energy}')""".format(**data)
         Sql.exec(sql_second)

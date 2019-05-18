@@ -36,6 +36,7 @@ class Sql:
 
     @staticmethod
     def _query_exec(query):
+        print(query)
         return Sql._exec(query)
 
     @staticmethod

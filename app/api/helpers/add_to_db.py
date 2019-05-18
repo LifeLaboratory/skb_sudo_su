@@ -1,7 +1,7 @@
 from app.api.src.matrix import *
 
 
-with open("product.log","r") as f:
+with open("product","r") as f:
     lines = f.readlines()
 
 

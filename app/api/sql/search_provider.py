@@ -5,9 +5,13 @@ class Provider:
     @staticmethod
     def search_nom(args):
         query = """
-    select *
+    select id_nom
+     , name
+     , img
+     , shelf_life::text
+     , code
     from nomenclature
-    where "{field}" = '{query}'
+    where lower("{field}") like lower('%{query}%')
      """
         # print(query)
         return Sql.exec(query=query, args=args)

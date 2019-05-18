@@ -7,7 +7,11 @@ class Provider:
         query = """
   select *
   from(
-    select *
+    select id_nom
+     , name
+     , img
+     , shelf_life::text
+     , code
     from nomenclature
     order by name
   ) nom
@@ -24,10 +28,18 @@ class Provider:
     select 
       n.name
       , n.code
-      , dn.*
+      , n.img
+      , dn.id_nom
+      , dn.gost
+      , dn.weight
+      , dn.storage_conditions
+      , dn.gmo
+      , dn.packing
+      , dn.energy
     from user_nom 
       left join nomenclature n using(id_nom)
       left join description_nom dn using(id_nom)
+    where id_user = {id_user}
     order by name
   ) nom
   limit 100 offset 100*{page}
