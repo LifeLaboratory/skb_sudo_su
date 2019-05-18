@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
@@ -20,18 +20,18 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_main: {
                     mTextMessage.setText(R.string.title_main);
-                    Intent toMainActivity = new Intent(MainActivity.this, MainActivity.class);
+                    Intent toMainActivity = new Intent(ProfileActivity.this, MainActivity.class);
                     startActivity(toMainActivity);
                     return true;
                 }
                 case R.id.navigation_profile:
                     mTextMessage.setText(R.string.title_profile);
-                    Intent toProfileActivity = new Intent(MainActivity.this, ProfileActivity.class);
+                    Intent toProfileActivity = new Intent(ProfileActivity.this, ProfileActivity.class);
                     startActivity(toProfileActivity);
                     return true;
                 case R.id.navigation_search:
                     mTextMessage.setText(R.string.title_search);
-                    Intent toSearchActivity = new Intent(MainActivity.this, SearchActivity.class);
+                    Intent toSearchActivity = new Intent(ProfileActivity.this, SearchActivity.class);
                     startActivity(toSearchActivity);
                     return true;
             }
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_profile);
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

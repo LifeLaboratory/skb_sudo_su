@@ -3,4 +3,6 @@
     <string name="title_search">Поиск</string>
     <string name="title_main">Главная</string>
     <string name="title_profile">Кабинет</string>
+    <string name="title_activity_profile">Кабинет</string>
+    <string name="title_activity_search">Поиск</string>
 </resources>
