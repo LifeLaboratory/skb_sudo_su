@@ -14,6 +14,7 @@ public class Item {
     private String packing;
     private String energy;
     private Integer count;
+    private String expired_end;
 
     public String getTitle() {
         return name;
@@ -121,5 +122,13 @@ public class Item {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public String getExpiredEnd() {
+        return expired_end;
+    }
+
+    public void setExpiredEnd(String expired_end) {
+        this.expired_end = expired_end;
     }
 }

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +98,112 @@ public class MainListAdapter extends BaseAdapter {
 
         final Integer numItem = i;
 
-        view.setOnTouchListener(new OnSwipeTouchListener(ctx) {
+        ((Button) view.findViewById(R.id.btn_have)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!MainListAdapter.this.deleteSaleStatus) {
+                    haveDialog = new Dialog(ctx);
+                    haveDialog.setTitle("Добавить");
+                    haveDialog.setContentView(R.layout.dialog_add_to_have);
+                    if (MainListAdapter.this.deleteListStatus) {
+                        ((TextView) haveDialog.findViewById(R.id.title_dialog)).setText("Удалить из моего списка?");
+                        ((CalendarView) haveDialog.findViewById(R.id.calendar_dialog)).setVisibility(View.GONE);
+                    } else {
+                        ((CalendarView) haveDialog.findViewById(R.id.calendar_dialog)).setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                            @Override
+                            public void onSelectedDayChange(CalendarView calendarView, int year, int month, int dayOfMonth) {
+                                Date date= new Date(year, month, dayOfMonth);
+                                time = date.getTime();
+                                Toast.makeText(ctx.getApplicationContext(), String.valueOf(time), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                    haveDialog.show();
+
+                    ((Button) haveDialog.findViewById(R.id.btn_dialog_no)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            haveDialog.cancel();
+                        }
+                    });
+
+                    ((Button) haveDialog.findViewById(R.id.btn_dialog_yes)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (!MainListAdapter.this.deleteListStatus) {
+                                SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                                if (sp.getInt(Constants.USER_ID, -1) != -1) {
+                                    ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                                    toServerItem.addToNomenclature(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId(), time))
+                                            .enqueue(new Callback<ru.lifelaboratory.skb.Entity.Item>() {
+                                                @Override
+                                                public void onResponse(Call<Item> call, Response<Item> response) {
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<Item> call, Throwable t) {
+                                                }
+                                            });
+                                }
+                            } else {
+                                // TODO: удалить из моего списка с сервера
+                            }
+                            haveDialog.cancel();
+                        }
+                    });
+                }
+            }
+        });
+
+        ((Button) view.findViewById(R.id.btn_sale)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                saleDialog = new Dialog(ctx);
+                saleDialog.setTitle("Вход");
+                saleDialog.setContentView(R.layout.dialog_add_to_sale);
+
+                if (MainListAdapter.this.deleteSaleStatus) {
+                    ((TextView) saleDialog.findViewById(R.id.dialog_title)).setText("Удалить из списка покупок?");
+                }
+
+                saleDialog.show();
+
+                ((Button) saleDialog.findViewById(R.id.btn_dialog_no)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        saleDialog.cancel();
+                    }
+                });
+
+                ((Button) saleDialog.findViewById(R.id.btn_dialog_yes)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!MainListAdapter.this.deleteSaleStatus) {
+                            SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                            if (sp.getInt(Constants.USER_ID, -1) != -1) {
+                                ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                                toServerItem.addToSale(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId()))
+                                        .enqueue(new Callback<Item>() {
+                                            @Override
+                                            public void onResponse(Call<Item> call, Response<Item> response) {
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Item> call, Throwable t) {
+                                            }
+                                        });
+                            }
+                        } else {
+                            // TODO: удаление с сервера
+                        }
+                        saleDialog.cancel();
+                    }
+                });
+            }
+        });
+
+        ((CardView) view.findViewById(R.id.card_view)).setOnTouchListener(new OnSwipeTouchListener(ctx) {
             public void onSwipeRight() {
                 // свайп слева направо, добавление в список покупок
                 saleDialog = new Dialog(ctx);

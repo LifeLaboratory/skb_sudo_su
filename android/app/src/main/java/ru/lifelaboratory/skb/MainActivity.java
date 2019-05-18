@@ -1,6 +1,10 @@
 package ru.lifelaboratory.skb;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,8 +14,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +24,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.lifelaboratory.skb.Entity.AddItem;
 import ru.lifelaboratory.skb.Entity.Item;
-import ru.lifelaboratory.skb.REST.User;
+import ru.lifelaboratory.skb.service.NotificationService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -103,7 +106,22 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     });
+        }
 
+        if (sp.getInt(Constants.USER_ID, -1) != -1) {
+            NotificationChannel channel = new NotificationChannel("skb_chanel", "skb_chanel", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("skb_chanel");
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+            // запуск службы
+            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+            intent.putExtra(Constants.USER_ID, sp.getInt(Constants.USER_ID, -1));
+            PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            long startTime = System.currentTimeMillis();
+            long day = 1000 * 60 * 60 * 24;
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, startTime, day, pendingIntent);
         }
     }
 
