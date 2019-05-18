@@ -46,3 +46,66 @@ class Provider:
   """
         # print(query)
         return Sql.exec(query=query, args=args)
+
+    @staticmethod
+    def add_nom_in_user(args):
+        query = """
+ insert into user_nom(id_user, id_nom, expired_end)
+ select 
+   {id_user}
+   , {id_nom}
+   , now() + (
+              select shelf_life 
+              from nomenclature 
+              where id_nom = {id_nom} 
+              limit 1
+      )
+  """
+        # print(query)
+        return Sql.exec(query=query, args=args)
+
+    @staticmethod
+    def update_expired_end(args):
+        query = """
+ update user_nom 
+ set expired_end = '{expired_end}'::timestamp
+ where id_user = {id_user}
+   and id_nom = {id_nom}
+  """
+        # print(query)
+        return Sql.exec(query=query, args=args)
+
+    @staticmethod
+    def update_expired_start(args):
+        query = """
+ update user_nom 
+ set expired_start = '{expired_start}'::timestamp
+ where id_user = {id_user}
+   and id_nom = {id_nom}
+  """
+        # print(query)
+        return Sql.exec(query=query, args=args)
+
+    @staticmethod
+    def update_expired(args):
+        query = """
+ update user_nom 
+ set expired_start = '{expired_start}'::timestamp
+   , expired_end = '{expired_end}'::timestamp
+ where id_user = {id_user}
+   and id_nom = {id_nom}
+  """
+        # print(query)
+        return Sql.exec(query=query, args=args)
+
+    @staticmethod
+    def delete_expired(args):
+        query = """
+ update user_nom 
+ set close = True
+ where id_user = {id_user}
+   and id_user_nom = {id_user_nom}
+  """
+        # print(query)
+        return Sql.exec(query=query, args=args)
+

@@ -20,3 +20,21 @@ class Provider:
      """
         # print(query)
         return Sql.exec(query=query, args=args)
+
+    @staticmethod
+    def add_sales_user(args):
+        query = """
+    insert into sales_list("id_user", "id_nom") values ({id_user}, {id_nom})
+     """
+        return Sql.exec(query=query, args=args)
+
+    @staticmethod
+    def delete_sales_user(args):
+        query = """
+ update sales_list
+ set close = True
+ where id_user = {id_user}
+   and id_sales = {id_sales}
+     """
+        return Sql.exec(query=query, args=args)
+
