@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,18 @@ public class MainActivity extends AppCompatActivity {
         mainList = (ListView) findViewById(R.id.lvMain);
         mainList.setAdapter(mainListAdapter);
         mainListAdapter.notifyDataSetChanged();
+
+        mainList.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this){
+            public void onSwipeRight() {
+                Toast.makeText(getApplicationContext(), "Right swipe", Toast.LENGTH_SHORT).show();
+                //свайп слева направо, диалоговое окно на добавление в корзину
+            }
+            public void onSwipeLeft() {
+                Toast.makeText(getApplicationContext(), "left swipe", Toast.LENGTH_SHORT).show();
+                // свайп справа налево, добавление в список наличия
+            }
+
+        });
     }
 
 }
