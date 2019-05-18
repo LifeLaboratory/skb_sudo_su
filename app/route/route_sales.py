@@ -1,21 +1,16 @@
 # coding=utf-8
-from app.api.base import base_name as names, base_errors as errors
+from app.api.base import base_name as names
 from app.api.src.authentication import auth
-from flask_restful import Resource
+from app.api.base.base_router import BaseRouter
 
 
-class Sales(Resource):
-    args = [names.LOGIN, names.PASSWORD, names.PAGE]
+class Sales(BaseRouter):
+
+    def __init__(self):
+        super().__init__()
+        self.args = [names.LOGIN, names.PASSWORD]
 
     def post(self):
-        error, data = self.parse_data()
-        if error == errors.OK:
-            error, answer = auth(data)
-            if error == errors.OK:
-                return answer, {'Access-Control-Allow-Origin': '*'}
-        return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}
-
-    def options(self):
-        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*',
-                                 'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,OPTIONS',
-                                 'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type'}
+        self._read_args()
+        answer = auth(self.data)
+        return answer

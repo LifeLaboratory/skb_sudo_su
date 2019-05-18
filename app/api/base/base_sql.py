@@ -53,6 +53,7 @@ class Sql:
     @staticmethod
     def _query_exec_args(query, args):
         query = query.format(**args)
+        print(query)
         return Sql._exec(query)
 
     @staticmethod

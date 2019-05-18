@@ -13,19 +13,42 @@ class TestAuth(unittest.TestCase):
                 names.PASSWORD: 'boris'
                 }
         data = req.post('http://127.0.0.1/auth', data=data)
-        self.assertEqual(data, 200)
-        self.assertIsNotNone(data)
+        self.assertEqual(data.status_code, 200)
+        self.assertIsNotNone(data.text)
+        print(data.text)
         return
 
     def test_register_back_client(self):
         data = {
-                names.LOGIN: 'boris1',
+                names.LOGIN: 'boris2',
                 names.PASSWORD: 'boris',
                 names.NAME: 'boris'
                 }
         data = req.post('http://127.0.0.1/register', data=data)
-        self.assertEqual(data, 200)
-        self.assertIsNotNone(data)
+        self.assertEqual(data.status_code, 200)
+        self.assertIsNotNone(data.text)
+        print(data.text)
+        return
+
+    def test_list_nom_back_client(self):
+        data = req.get('http://127.0.0.1/get_list')
+        self.assertEqual(data.status_code, 200)
+        self.assertIsNotNone(data.text)
+        print(data.text)
+        return
+
+    def test_search_nom_back_client(self):
+        data = req.get('http://127.0.0.1/search/code/терафлю')
+        self.assertEqual(data.status_code, 200)
+        self.assertIsNotNone(data.text)
+        print(data.text)
+        return
+
+    def test_info_nom_back_client(self):
+        data = req.get('http://127.0.0.1/info/1')
+        self.assertEqual(data.status_code, 200)
+        self.assertIsNotNone(data.text)
+        print(data.text)
         return
 
     def test_auth_back_staff(self):
