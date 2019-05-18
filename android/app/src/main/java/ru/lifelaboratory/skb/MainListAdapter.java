@@ -53,6 +53,17 @@ public class MainListAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    boolean deleteSaleStatus = false;
+    boolean deleteListStatus = false;
+
+    public void setDeleteStatus(boolean deleteStatus) {
+        this.deleteSaleStatus = deleteStatus;
+    }
+
+    public void setDeleteListStatus(boolean deleteListStatus) {
+        this.deleteListStatus = deleteListStatus;
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
@@ -71,7 +82,7 @@ public class MainListAdapter extends BaseAdapter {
 
         final String barCodeItem = String.valueOf(items.get(i).getId());
 
-        view.setOnClickListener(new View.OnClickListener() {
+        ((TextView) view.findViewById(R.id.elementTitle)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent toItemInfo = new Intent(ctx, ItemInfoActivity.class);
@@ -88,6 +99,11 @@ public class MainListAdapter extends BaseAdapter {
                 saleDialog = new Dialog(ctx);
                 saleDialog.setTitle("Вход");
                 saleDialog.setContentView(R.layout.dialog_add_to_sale);
+
+                if (MainListAdapter.this.deleteSaleStatus) {
+                    ((TextView) saleDialog.findViewById(R.id.dialog_title)).setText("Удалить из списка покупок?");
+                }
+
                 saleDialog.show();
 
                 ((Button) saleDialog.findViewById(R.id.btn_dialog_no)).setOnClickListener(new View.OnClickListener() {
@@ -100,19 +116,23 @@ public class MainListAdapter extends BaseAdapter {
                 ((Button) saleDialog.findViewById(R.id.btn_dialog_yes)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
-                        if (sp.getInt(Constants.USER_ID, -1) != -1) {
-                            ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
-                            toServerItem.addToSale(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId()))
-                                    .enqueue(new Callback<Item>() {
-                                        @Override
-                                        public void onResponse(Call<Item> call, Response<Item> response) {
-                                        }
+                        if (!MainListAdapter.this.deleteSaleStatus) {
+                            SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                            if (sp.getInt(Constants.USER_ID, -1) != -1) {
+                                ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                                toServerItem.addToSale(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId()))
+                                        .enqueue(new Callback<Item>() {
+                                            @Override
+                                            public void onResponse(Call<Item> call, Response<Item> response) {
+                                            }
 
-                                        @Override
-                                        public void onFailure(Call<Item> call, Throwable t) {
-                                        }
-                                    });
+                                            @Override
+                                            public void onFailure(Call<Item> call, Throwable t) {
+                                            }
+                                        });
+                            }
+                        } else {
+                            // TODO: удаление с сервера
                         }
                         saleDialog.cancel();
                     }
@@ -121,38 +141,47 @@ public class MainListAdapter extends BaseAdapter {
 
             public void onSwipeLeft() {
                 // свайп справа налево, добавление в список наличия
-                haveDialog = new Dialog(ctx);
-                haveDialog.setTitle("Добавить");
-                haveDialog.setContentView(R.layout.dialog_add_to_have);
-                haveDialog.show();
-
-                ((Button) haveDialog.findViewById(R.id.btn_dialog_no)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        haveDialog.cancel();
+                if (!MainListAdapter.this.deleteSaleStatus) {
+                    haveDialog = new Dialog(ctx);
+                    haveDialog.setTitle("Добавить");
+                    haveDialog.setContentView(R.layout.dialog_add_to_have);
+                    if (MainListAdapter.this.deleteListStatus) {
+                        ((TextView) haveDialog.findViewById(R.id.title_dialog)).setText("Удалить из моего списка?");
                     }
-                });
+                    haveDialog.show();
 
-                ((Button) haveDialog.findViewById(R.id.btn_dialog_yes)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
-                        if (sp.getInt(Constants.USER_ID, -1) != -1) {
-                            ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
-                            toServerItem.addToNomenclature(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId()))
-                                    .enqueue(new Callback<ru.lifelaboratory.skb.Entity.Item>() {
-                                        @Override
-                                        public void onResponse(Call<Item> call, Response<Item> response) {
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<Item> call, Throwable t) {
-                                        }
-                                    });
+                    ((Button) haveDialog.findViewById(R.id.btn_dialog_no)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            haveDialog.cancel();
                         }
-                        haveDialog.cancel();
-                    }
-                });
+                    });
+
+                    ((Button) haveDialog.findViewById(R.id.btn_dialog_yes)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (!MainListAdapter.this.deleteListStatus) {
+                                SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                                if (sp.getInt(Constants.USER_ID, -1) != -1) {
+                                    ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                                    toServerItem.addToNomenclature(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId()))
+                                            .enqueue(new Callback<ru.lifelaboratory.skb.Entity.Item>() {
+                                                @Override
+                                                public void onResponse(Call<Item> call, Response<Item> response) {
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<Item> call, Throwable t) {
+                                                }
+                                            });
+                                }
+                            } else {
+                                // TODO: удалить из моего списка с сервера
+                            }
+                            haveDialog.cancel();
+                        }
+                    });
+                }
             }
         });
 

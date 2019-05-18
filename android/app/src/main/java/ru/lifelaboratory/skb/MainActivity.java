@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         mainListAdapter = new MainListAdapter(this, items);
         mainList = (ListView) findViewById(R.id.lvMain);
+        mainListAdapter.setDeleteListStatus(true);
         mainList.setAdapter(mainListAdapter);
         mainListAdapter.notifyDataSetChanged();
 
