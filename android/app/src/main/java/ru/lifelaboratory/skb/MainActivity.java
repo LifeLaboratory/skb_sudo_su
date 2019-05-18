@@ -1,5 +1,6 @@
 package ru.lifelaboratory.skb;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,9 +8,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 import java.util.ArrayList;
 
 import retrofit2.Retrofit;
@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     MainListAdapter mainListAdapter = null;
     ListView mainList = null;
     public static Retrofit server = null;
+    Dialog saleDialog = null;
+    Dialog haveDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +81,48 @@ public class MainActivity extends AppCompatActivity {
 
         mainList.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this){
             public void onSwipeRight() {
-                Toast.makeText(getApplicationContext(), "Right swipe", Toast.LENGTH_SHORT).show();
-                //свайп слева направо, диалоговое окно на добавление в корзину
+                // свайп слева направо, добавление в список покупок
+                saleDialog = new Dialog(MainActivity.this);
+                saleDialog.setTitle("Вход");
+                saleDialog.setContentView(R.layout.dialog_add_to_sale);
+                saleDialog.show();
+
+                ((Button) saleDialog.findViewById(R.id.btn_dialog_no)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        saleDialog.cancel();
+                    }
+                });
+
+                ((Button) saleDialog.findViewById(R.id.btn_dialog_yes)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                        User toServerUser = MainActivity.server.create(User.class);
+                        saleDialog.cancel();
+                    }
+                });
             }
             public void onSwipeLeft() {
-                Toast.makeText(getApplicationContext(), "left swipe", Toast.LENGTH_SHORT).show();
                 // свайп справа налево, добавление в список наличия
+                haveDialog = new Dialog(MainActivity.this);
+                haveDialog.setTitle("Вход");
+                haveDialog.setContentView(R.layout.dialog_add_to_have);
+                haveDialog.show();
+
+                ((Button) haveDialog.findViewById(R.id.btn_dialog_no)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        haveDialog.cancel();
+                    }
+                });
+
+                ((Button) haveDialog.findViewById(R.id.btn_dialog_yes)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                        User toServerUser = MainActivity.server.create(User.class);
+                        haveDialog.cancel();
+                    }
+                });
             }
 
         });

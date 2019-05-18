@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="280dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorSubPrimary"
+        android:text="@string/add_to_sale"
+        android:textSize="24dp"
+        android:padding="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_no"
+            android:id="@+id/btn_dialog_no"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorSubPrimary"/>
+        <Button
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_yes"
+            android:id="@+id/btn_dialog_yes"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorSubPrimary"/>
+    </LinearLayout>
+
+</LinearLayout>

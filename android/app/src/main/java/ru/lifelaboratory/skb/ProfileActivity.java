@@ -1,7 +1,9 @@
 package ru.lifelaboratory.skb;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -46,7 +48,9 @@ public class ProfileActivity extends AppCompatActivity {
     };
 
     Dialog authDialog = null;
+    Dialog registerDialog = null;
     View mainView = null;
+    View dialogView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,13 @@ public class ProfileActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mainView = (View) findViewById(R.id.container);
+
+
+        SharedPreferences sp = getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+        if (sp.getInt(Constants.USER_ID, -1) != -1) {
+
+        }
+
 
         // авторизация
         ((Button) findViewById(R.id.btn_login)).setOnClickListener(new View.OnClickListener() {
@@ -85,13 +96,17 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<ru.lifelaboratory.skb.Entity.User> call, Response<ru.lifelaboratory.skb.Entity.User> response) {
                                 if (response.body().getId() != null) {
+                                    SharedPreferences sp = getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor e = sp.edit();
+                                    e.putInt(Constants.USER_ID, response.body().getId());
+                                    e.apply();
+
                                     Snackbar.make(mainView, "Авторизация прошла успешно", Snackbar.LENGTH_LONG).show();
                                     authDialog.cancel();
                                     // TODO: сохранение данных в память телефона
                                     ((LinearLayout) findViewById(R.id.ifNotAuth)).setVisibility(View.INVISIBLE);
                                     ((LinearLayout) findViewById(R.id.ifAuth)).setVisibility(View.VISIBLE);
                                     LinearLayout ifNotAuth = findViewById(R.id.ifNotAuth);
-                                    ifNotAuth.removeAllViews();
                                 } else {
                                     Snackbar.make(mainView, "Ошибка авторизации ", Snackbar.LENGTH_LONG).show();
                                 }
@@ -106,6 +121,73 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        // регистрация
+        ((Button) findViewById(R.id.btn_register)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registerDialog = new Dialog(ProfileActivity.this);
+                registerDialog.setTitle("Регистрация");
+                registerDialog.setContentView(R.layout.dialog_register);
+                registerDialog.show();
+                dialogView = registerDialog.findViewById(R.id.dialog_register);
+
+                ((Button) registerDialog.findViewById(R.id.btn_dialog_cancel)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        registerDialog.cancel();
+                    }
+                });
+
+                ((Button) registerDialog.findViewById(R.id.btn_dialog_auth)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        User toServerUser = MainActivity.server.create(User.class);
+                        EditText loginEditText = (EditText) registerDialog.findViewById(R.id.dialog_login);
+                        EditText passwordEditText = (EditText) registerDialog.findViewById(R.id.dialog_password);
+                        EditText rePasswordEditText = (EditText) registerDialog.findViewById(R.id.dialog_re_password);
+                        EditText nameEditText = (EditText) registerDialog.findViewById(R.id.dialog_name);
+
+                        if (!rePasswordEditText.getText().toString().equals(passwordEditText.getText().toString())) {
+                            Snackbar.make(dialogView, "Пароли не совпадают", Snackbar.LENGTH_LONG).show();
+                        } else {
+                            toServerUser.register(new ru.lifelaboratory.skb.Entity.User(loginEditText.getText().toString(), passwordEditText.getText().toString(), nameEditText.getText().toString()))
+                                    .enqueue(new Callback<ru.lifelaboratory.skb.Entity.User>() {
+                                        @Override
+                                        public void onResponse(Call<ru.lifelaboratory.skb.Entity.User> call, Response<ru.lifelaboratory.skb.Entity.User> response) {
+                                            Snackbar.make(mainView, "Регистрация прошла успешно", Snackbar.LENGTH_LONG).show();
+                                            registerDialog.cancel();
+                                            // TODO: сохранение данных в память телефона
+                                            ((LinearLayout) findViewById(R.id.ifNotAuth)).setVisibility(View.INVISIBLE);
+                                            ((LinearLayout) findViewById(R.id.ifAuth)).setVisibility(View.VISIBLE);
+                                            LinearLayout ifNotAuth = findViewById(R.id.ifNotAuth);
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ru.lifelaboratory.skb.Entity.User> call, Throwable t) {
+                                            Snackbar.make(mainView, "Ошибка регистрации ", Snackbar.LENGTH_LONG).show();
+                                            Log.e(Constants.LOG, t.getMessage().concat(" <- ошибка регистрации"));
+                                        }
+                                    });
+
+                        }
+                    }
+                });
+
+            }
+        });
+
+        ((Button) findViewById(R.id.btn_exit)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sp = getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                SharedPreferences.Editor e = sp.edit();
+                e.remove(Constants.USER_ID);
+                e.apply();
+                ((LinearLayout) findViewById(R.id.ifNotAuth)).setVisibility(View.VISIBLE);
+                ((LinearLayout) findViewById(R.id.ifAuth)).setVisibility(View.INVISIBLE);
             }
         });
     }
