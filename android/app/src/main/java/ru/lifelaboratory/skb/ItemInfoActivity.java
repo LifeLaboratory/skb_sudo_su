@@ -6,8 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -26,11 +29,10 @@ public class ItemInfoActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_main: {
+                case R.id.navigation_main:
                     Intent toMainActivity = new Intent(ItemInfoActivity.this, MainActivity.class);
                     startActivity(toMainActivity);
                     return true;
-                }
                 case R.id.navigation_profile:
                     Intent toProfileActivity = new Intent(ItemInfoActivity.this, ProfileActivity.class);
                     startActivity(toProfileActivity);
@@ -49,7 +51,7 @@ public class ItemInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_info);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        mTextMessage = (TextView) findViewById(R.id.item_name);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -59,6 +61,12 @@ public class ItemInfoActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Response<List<ru.lifelaboratory.skb.Entity.Item>> response) {
                 mTextMessage.setText(response.body().get(0).getTitle());
+                ImageView photo = (ImageView) findViewById(R.id.item_photo);
+                Picasso.with(getApplicationContext())
+                        .load(response.body().get(0).getImg())
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .error(R.drawable.ic_launcher_foreground)
+                        .into(photo);
             }
 
             @Override
