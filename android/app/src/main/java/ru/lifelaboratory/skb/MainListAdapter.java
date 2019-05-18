@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.lifelaboratory.skb.Entity.AddItem;
-import ru.lifelaboratory.skb.Entity.DeleteItem;
 import ru.lifelaboratory.skb.Entity.Item;
 
 public class MainListAdapter extends BaseAdapter {
@@ -86,18 +86,23 @@ public class MainListAdapter extends BaseAdapter {
         if (items.get(i).getCount() != null)
             ((TextView) view.findViewById(R.id.elementCount)).setText(String.valueOf(items.get(i).getCount()).concat(" шт "));
 
-        final String barCodeItem = String.valueOf(items.get(i).getId());
+        final Integer barCodeItem = items.get(i).getId();
 
         ((TextView) view.findViewById(R.id.elementTitle)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent toItemInfo = new Intent(ctx, ItemInfoActivity.class);
+                Log.d(Constants.LOG, barCodeItem.toString());
                 toItemInfo.putExtra(Constants.ITEM_ID, barCodeItem);
                 ctx.startActivity(toItemInfo);
             }
         });
 
         final Integer numItem = i;
+
+        if (deleteSaleStatus) {
+            ((Button) view.findViewById(R.id.btn_have)).setVisibility(View.INVISIBLE);
+        }
 
         ((Button) view.findViewById(R.id.btn_have)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +152,19 @@ public class MainListAdapter extends BaseAdapter {
                                             });
                                 }
                             } else {
-                                // TODO: удалить из моего списка с сервера
+                                SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                                ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                                toServerItem.deleteFromNom(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId_user_nom())
+                                        .enqueue(new Callback<Item>() {
+                                            @Override
+                                            public void onResponse(Call<Item> call, Response<Item> response) {
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Item> call, Throwable t) {
+                                                Toast.makeText(ctx, "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                             }
                             haveDialog.cancel();
                         }
@@ -196,7 +213,20 @@ public class MainListAdapter extends BaseAdapter {
                                         });
                             }
                         } else {
-                            // TODO: удаление с сервера
+                            SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                            ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                            toServerItem.deleteFromSale(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId_sales())
+                                    .enqueue(new Callback<Item>() {
+                                        @Override
+                                        public void onResponse(Call<Item> call, Response<Item> response) {
+                                            Toast.makeText(ctx, numItem.toString(), Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Item> call, Throwable t) {
+                                            Toast.makeText(ctx, "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                         }
                         saleDialog.cancel();
                     }
@@ -243,7 +273,6 @@ public class MainListAdapter extends BaseAdapter {
                                         });
                             }
                         } else {
-                            // TODO: удаление с сервера
                             SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
                             ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
                             toServerItem.deleteFromSale(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId_sales())
@@ -311,7 +340,6 @@ public class MainListAdapter extends BaseAdapter {
                                             });
                                 }
                             } else {
-                                // TODO: удалить из моего списка с сервера
                                 SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
                                 ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
                                 toServerItem.deleteFromNom(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId_user_nom())

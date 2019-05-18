@@ -39,7 +39,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 
     @Override
     public void handleResult(Result rawResult) {
-        Log.v("BarcodeResult", rawResult.getText());
+        Log.d("BarcodeResult", rawResult.getText());
         mScannerView.stopCamera();
 
         Item search = MainActivity.server.create(Item.class);
@@ -47,7 +47,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                 .enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
                     @Override
                     public void onResponse(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Response<List<ru.lifelaboratory.skb.Entity.Item>> response) {
-                        if (response.body() != null && response.body().get(0) != null) {
+                        if (response.body() != null && response.body().size() > 0 && response.body().get(0) != null) {
                             Intent toItemInfo = new Intent(ScanActivity.this, ItemInfoActivity.class);
                             toItemInfo.putExtra(Constants.ITEM_ID, response.body().get(0).getId());
                             startActivity(toItemInfo);

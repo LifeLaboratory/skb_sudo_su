@@ -132,6 +132,7 @@ public class Item {
 
     public void setExpiredEnd(String expired_end) {
         this.expired_end = expired_end;
+    }
 
     public Integer getId_sales() {
         return id_sales;
