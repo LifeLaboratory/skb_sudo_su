@@ -36,13 +36,44 @@ class Provider:
       , dn.gmo
       , dn.packing
       , dn.energy
+      , id_user_nom
     from user_nom 
       left join nomenclature n using(id_nom)
       left join description_nom dn using(id_nom)
     where id_user = {id_user}
+      and not "close"
     order by name
   ) nom
   limit 100 offset 100*{page}
+  """
+        # print(query)
+        return Sql.exec(query=query, args=args)
+
+    @staticmethod
+    def get_user_list_expired(args):
+        query = """
+ select *
+  from(
+    select 
+      n.name
+      , n.code
+      , n.img
+      , dn.id_nom
+      , dn.gost
+      , dn.weight
+      , dn.storage_conditions
+      , dn.gmo
+      , dn.packing
+      , dn.energy
+      , expired_start::text
+      , expired_end::text
+    from user_nom 
+      left join nomenclature n using(id_nom)
+      left join description_nom dn using(id_nom)
+    where id_user = {id_user}
+      and not "close"
+    order by name
+  ) nom
   """
         # print(query)
         return Sql.exec(query=query, args=args)

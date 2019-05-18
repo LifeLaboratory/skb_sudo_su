@@ -19,7 +19,7 @@ def get_category(code):
         answer = a[-1]
     else:
         answer = a[2]
-    
+
     return answer
 
 

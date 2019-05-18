@@ -14,6 +14,12 @@ def get_user_list(args):
     return answer
 
 
+def get_user_list_expired(args):
+    provider = Provider()
+    answer = provider.get_user_list_expired(args)
+    return answer
+
+
 def add_nom_in_user(args):
     provider = Provider()
     answer = provider.add_nom_in_user(args)

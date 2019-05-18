@@ -17,6 +17,7 @@ ID_NAME = "id_nom"
 ID_USER = "id_user"
 ID_NOM = "id_nom"
 ID_SALES = "id_sales"
+INTERVAL = "interval"
 ID_USER_NOM = "id_user_nom"
 EXPIRED_START = 'expired_start'
 EXPIRED_END = 'expired_end'

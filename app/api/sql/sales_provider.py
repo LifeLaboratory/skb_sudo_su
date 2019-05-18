@@ -12,6 +12,7 @@ class Provider:
       , n.shelf_life::text
       , n.code
       , sl.count
+      , sl.id_sales
     from sales_list sl
       left join nomenclature n using ("id_nom")
     where "id_user" = {id_user}
