@@ -1,11 +1,14 @@
 package ru.lifelaboratory.skb;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +17,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import ru.lifelaboratory.skb.Entity.AddItem;
 import ru.lifelaboratory.skb.Entity.Item;
 
 public class MainListAdapter extends BaseAdapter {
@@ -21,6 +28,8 @@ public class MainListAdapter extends BaseAdapter {
     List<Item> items = new ArrayList<>();
     Context ctx = null;
     LayoutInflater lInflater = null;
+    Dialog saleDialog = null;
+    Dialog haveDialog = null;
 
     @Override
     public int getCount() {
@@ -70,6 +79,83 @@ public class MainListAdapter extends BaseAdapter {
                 ctx.startActivity(toItemInfo);
             }
         });
+
+        final Integer numItem = i;
+
+        view.setOnTouchListener(new OnSwipeTouchListener(ctx) {
+            public void onSwipeRight() {
+                // свайп слева направо, добавление в список покупок
+                saleDialog = new Dialog(ctx);
+                saleDialog.setTitle("Вход");
+                saleDialog.setContentView(R.layout.dialog_add_to_sale);
+                saleDialog.show();
+
+                ((Button) saleDialog.findViewById(R.id.btn_dialog_no)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        saleDialog.cancel();
+                    }
+                });
+
+                ((Button) saleDialog.findViewById(R.id.btn_dialog_yes)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                        if (sp.getInt(Constants.USER_ID, -1) != -1) {
+                            ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                            toServerItem.addToSale(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId()))
+                                    .enqueue(new Callback<Item>() {
+                                        @Override
+                                        public void onResponse(Call<Item> call, Response<Item> response) {
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Item> call, Throwable t) {
+                                        }
+                                    });
+                        }
+                        saleDialog.cancel();
+                    }
+                });
+            }
+
+            public void onSwipeLeft() {
+                // свайп справа налево, добавление в список наличия
+                haveDialog = new Dialog(ctx);
+                haveDialog.setTitle("Добавить");
+                haveDialog.setContentView(R.layout.dialog_add_to_have);
+                haveDialog.show();
+
+                ((Button) haveDialog.findViewById(R.id.btn_dialog_no)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        haveDialog.cancel();
+                    }
+                });
+
+                ((Button) haveDialog.findViewById(R.id.btn_dialog_yes)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                        if (sp.getInt(Constants.USER_ID, -1) != -1) {
+                            ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                            toServerItem.addToNomenclature(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId()))
+                                    .enqueue(new Callback<ru.lifelaboratory.skb.Entity.Item>() {
+                                        @Override
+                                        public void onResponse(Call<Item> call, Response<Item> response) {
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Item> call, Throwable t) {
+                                        }
+                                    });
+                        }
+                        haveDialog.cancel();
+                    }
+                });
+            }
+        });
+
         return view;
     }
 }
