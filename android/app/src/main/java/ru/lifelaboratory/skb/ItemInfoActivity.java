@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +48,8 @@ public class ItemInfoActivity extends AppCompatActivity {
         }
     };
 
+    private View mainView = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,18 +59,30 @@ public class ItemInfoActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        mainView = (View) findViewById(R.id.container);
+
         String whatToSearch = getIntent().getStringExtra(Constants.ITEM_ID);
         Item search = MainActivity.server.create(Item.class);
         search.search("code", whatToSearch).enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
             @Override
             public void onResponse(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Response<List<ru.lifelaboratory.skb.Entity.Item>> response) {
-                mTextMessage.setText(response.body().get(0).getTitle());
-                ImageView photo = (ImageView) findViewById(R.id.item_photo);
-                Picasso.with(getApplicationContext())
-                        .load(response.body().get(0).getImg())
-                        .placeholder(R.drawable.ic_launcher_foreground)
-                        .error(R.drawable.ic_launcher_foreground)
-                        .into(photo);
+                if (response.body() == null) {
+                    Snackbar.make(mainView, "Неверный штрихкод", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    mTextMessage.setText(response.body().get(0).getTitle());
+                    ImageView photo = (ImageView) findViewById(R.id.item_photo);
+                    Picasso.with(getApplicationContext())
+                            .load(response.body().get(0).getImg())
+                            .placeholder(R.drawable.ic_launcher_foreground)
+                            .error(R.drawable.ic_launcher_foreground)
+                            .into(photo);
+                    ((TextView) findViewById(R.id.item_gost)).setText("ГОСТ: ".concat(response.body().get(0).getGost()));
+                    ((TextView) findViewById(R.id.item_weight)).setText("Вес: ".concat(response.body().get(0).getWeight()));
+                    ((TextView) findViewById(R.id.item_storage_conditions)).setText("Хранение: ".concat(response.body().get(0).getStorageConditions()));
+                    ((TextView) findViewById(R.id.item_gmo)).setText("ГМО: ".concat(response.body().get(0).getGmo()));
+                    ((TextView) findViewById(R.id.item_packing)).setText("Упаковка: ".concat(response.body().get(0).getStorageConditions()));
+                    ((TextView) findViewById(R.id.item_energy)).setText("Ценность: ".concat(response.body().get(0).getEnergy()));
+                }
             }
 
             @Override
