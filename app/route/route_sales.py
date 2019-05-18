@@ -10,6 +10,12 @@ class Sales(BaseRouter):
         super().__init__()
         self.args = [names.LOGIN, names.PASSWORD]
 
+    def get(self, id_user):
+        args = {
+            names.ID_USER: id_user
+        }
+        get_sales()
+
     def post(self):
         self._read_args()
         answer = auth(self.data)
