@@ -3,9 +3,11 @@ package ru.lifelaboratory.skb.REST;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
+import ru.lifelaboratory.skb.Entity.AddItem;
 
 public interface Item {
     @GET("/search/{type}/{item}")
@@ -19,4 +21,10 @@ public interface Item {
 
     @GET("/sales/{id_user}")
     Call <List<ru.lifelaboratory.skb.Entity.Item>> sales(@Path("id_user") Integer idUser);
+
+    @POST("/sales")
+    Call <ru.lifelaboratory.skb.Entity.Item> addToSale(@Body AddItem item);
+
+    @POST("/nomenclature")
+    Call <ru.lifelaboratory.skb.Entity.Item> addToNomenclature(@Body AddItem item);
 }

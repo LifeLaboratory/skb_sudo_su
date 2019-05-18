@@ -20,6 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.lifelaboratory.skb.Entity.AddItem;
 import ru.lifelaboratory.skb.Entity.Item;
 import ru.lifelaboratory.skb.REST.User;
 
@@ -127,6 +128,18 @@ public class MainActivity extends AppCompatActivity {
                         saleDialog.cancel();
                     }
                 });
+
+                SharedPreferences sp = getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                if (sp.getInt(Constants.USER_ID, -1) != -1) {
+                    ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                    toServerItem.addToSale(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get((int)mainList.getSelectedItemId()).getId()))
+                            .enqueue(new Callback<ru.lifelaboratory.skb.Entity.Item>() {
+                                @Override
+                                public void onResponse(Call<Item> call, Response<Item> response) { }
+                                @Override
+                                public void onFailure(Call<Item> call, Throwable t) { }
+                            });
+                }
             }
             public void onSwipeLeft() {
                 // свайп справа налево, добавление в список наличия
@@ -149,6 +162,18 @@ public class MainActivity extends AppCompatActivity {
                         haveDialog.cancel();
                     }
                 });
+
+                SharedPreferences sp = getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                if (sp.getInt(Constants.USER_ID, -1) != -1) {
+                    ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                    toServerItem.addToNomenclature(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get((int)mainList.getSelectedItemId()).getId()))
+                            .enqueue(new Callback<ru.lifelaboratory.skb.Entity.Item>() {
+                                @Override
+                                public void onResponse(Call<Item> call, Response<Item> response) { }
+                                @Override
+                                public void onFailure(Call<Item> call, Throwable t) { }
+                            });
+                }
             }
 
         });
