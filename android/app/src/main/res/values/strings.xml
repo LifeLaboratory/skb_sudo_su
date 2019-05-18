@@ -6,4 +6,9 @@
     <string name="title_activity_profile">Кабинет</string>
     <string name="title_activity_search">Поиск</string>
     <string name="btn_scan">Сканировать</string>
+    <string name="btn_auth">Вход</string>
+    <string name="btn_cancel">Отмена</string>
+    <string name="btn_register">Регистрация</string>
+    <string name="hint_login_text">Логин</string>
+    <string name="hint_password_text">Пароль</string>
 </resources>
