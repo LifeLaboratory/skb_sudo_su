@@ -6,6 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.lifelaboratory.skb.Entity.Item;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        (findViewById(R.id.btn_scan)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toScan = new Intent(MainActivity.this, ScanActivity.class);
+                startActivity(toScan);
+            }
+        });
 
         // основной список
         ArrayList<Item> items = new ArrayList<>();
