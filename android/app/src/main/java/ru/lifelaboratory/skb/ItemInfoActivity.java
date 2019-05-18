@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -62,8 +63,9 @@ public class ItemInfoActivity extends AppCompatActivity {
         mainView = (View) findViewById(R.id.container);
 
         String whatToSearch = getIntent().getStringExtra(Constants.ITEM_ID);
+        Log.e(Constants.LOG, whatToSearch);
         Item search = MainActivity.server.create(Item.class);
-        search.search("code", whatToSearch).enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
+        search.info(whatToSearch).enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
             @Override
             public void onResponse(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Response<List<ru.lifelaboratory.skb.Entity.Item>> response) {
                 if (response.body() == null) {
@@ -76,18 +78,26 @@ public class ItemInfoActivity extends AppCompatActivity {
                             .placeholder(R.drawable.ic_launcher_foreground)
                             .error(R.drawable.ic_launcher_foreground)
                             .into(photo);
-                    ((TextView) findViewById(R.id.item_gost)).setText("ГОСТ: ".concat(response.body().get(0).getGost()));
-                    ((TextView) findViewById(R.id.item_weight)).setText("Вес: ".concat(response.body().get(0).getWeight()));
-                    ((TextView) findViewById(R.id.item_storage_conditions)).setText("Хранение: ".concat(response.body().get(0).getStorageConditions()));
-                    ((TextView) findViewById(R.id.item_gmo)).setText("ГМО: ".concat(response.body().get(0).getGmo()));
-                    ((TextView) findViewById(R.id.item_packing)).setText("Упаковка: ".concat(response.body().get(0).getStorageConditions()));
-                    ((TextView) findViewById(R.id.item_energy)).setText("Ценность: ".concat(response.body().get(0).getEnergy()));
+                    if (response.body().get(0).getCode() != null)
+                        ((TextView) findViewById(R.id.item_gost)).setText(response.body().get(0).getGost());
+                    if (response.body().get(0).getWeight() != null)
+                        ((TextView) findViewById(R.id.item_weight)).setText(response.body().get(0).getWeight());
+                    if (response.body().get(0).getStorageConditions() != null)
+                        ((TextView) findViewById(R.id.item_storage_conditions)).setText(response.body().get(0).getStorageConditions());
+                    if (response.body().get(0).getGmo() != null)
+                        ((TextView) findViewById(R.id.item_gmo)).setText(response.body().get(0).getGmo());
+                    if (response.body().get(0).getStorageConditions() != null)
+                        ((TextView) findViewById(R.id.item_packing)).setText(response.body().get(0).getStorageConditions());
+                    if (response.body().get(0).getEnergy() != null)
+                        ((TextView) findViewById(R.id.item_energy)).setText(response.body().get(0).getEnergy());
+                    if (response.body().get(0).getShelfLife() != null)
+                        ((TextView) findViewById(R.id.item_shelf_life)).setText(response.body().get(0).getShelfLife());
                 }
             }
 
             @Override
             public void onFailure(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
+                Log.e(Constants.LOG, t.getMessage());
             }
         });
     }

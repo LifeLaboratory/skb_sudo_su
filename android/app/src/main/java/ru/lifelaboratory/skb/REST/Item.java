@@ -13,4 +13,7 @@ public interface Item {
 
     @GET("/get_list/{page}/{id_user}")
     Call <List<ru.lifelaboratory.skb.Entity.Item>> getUserList(@Path("page") Integer page, @Path("id_user") Integer idUser);
+
+    @GET("/info/{id_item}")
+    Call <List<ru.lifelaboratory.skb.Entity.Item>> info(@Path("id_item") String idItem);
 }

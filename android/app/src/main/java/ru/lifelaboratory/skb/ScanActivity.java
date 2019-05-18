@@ -7,7 +7,13 @@ import android.util.Log;
 
 import com.google.zxing.Result;
 
+import java.util.List;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import ru.lifelaboratory.skb.REST.Item;
 
 public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
     ZXingScannerView mScannerView;
@@ -35,9 +41,21 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     public void handleResult(Result rawResult) {
         Log.v("BarcodeResult", rawResult.getText());
         mScannerView.stopCamera();
-        Intent toItemInfo = new Intent(ScanActivity.this, ItemInfoActivity.class);
-        toItemInfo.putExtra(Constants.ITEM_ID, rawResult.getText());
-        startActivity(toItemInfo);
+
+        Item search = MainActivity.server.create(Item.class);
+        search.search("code", rawResult.getText())
+                .enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
+                    @Override
+                    public void onResponse(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Response<List<ru.lifelaboratory.skb.Entity.Item>> response) {
+                        if (response.body() != null && response.body().get(0) != null) {
+                            Intent toItemInfo = new Intent(ScanActivity.this, ItemInfoActivity.class);
+                            toItemInfo.putExtra(Constants.ITEM_ID, response.body().get(0).getId());
+                            startActivity(toItemInfo);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Throwable t) { }
+                });
     }
 
 }

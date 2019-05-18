@@ -1,6 +1,7 @@
 package ru.lifelaboratory.skb;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,17 @@ public class MainListAdapter extends BaseAdapter {
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(photo);
+
+        final String barCodeItem = String.valueOf(items.get(i).getId());
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toItemInfo = new Intent(ctx, ItemInfoActivity.class);
+                toItemInfo.putExtra(Constants.ITEM_ID, barCodeItem);
+                ctx.startActivity(toItemInfo);
+            }
+        });
         return view;
     }
 }
