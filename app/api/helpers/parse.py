@@ -43,29 +43,50 @@ def get_data(code):
     except:
         energy = ""
 
+    try:
+        packing = soup.find(id="ctl00_ContentPH_PackingType").text
+    except:
+        packing = ""
+
+    try:
+        description =soup.find(id = "ctl00_ContentPH_Comment").text
+    except:
+        description= ""
+
+    try:
+        weight =soup.find(id = "ctl00_ContentPH_Net").text
+    except:
+        weight = ""
 
 
 
+    try:
+        storage = soup.find(id = "ctl00_ContentPH_StoreCond").text
+    except:
+        storage = ""
 
+
+    if not bool(soup.find(id = "ctl00_ContentPH_GoodsName")):
+        return None
     data =  {
     "code":code,
     "img":"http://www.goodsmatrix.ru/BigImages/"+code+".jpg",
 
     "name" : soup.find(id = "ctl00_ContentPH_GoodsName").text,
 
-    "description" : soup.find(id = "ctl00_ContentPH_Comment").text,
+    "description" :description ,
 
     "gost":  gost,
 
-    "weight" : soup.find(id = "ctl00_ContentPH_Net").text,
+    "weight" : weight,
 
     "shelf_life" : date ,
 
-    "storage_conditions" : soup.find(id = "ctl00_ContentPH_StoreCond").text,
+    "storage_conditions" : storage,
 
     "gmo" : gmo,
 
-    "packing": soup.find(id =  "ctl00_ContentPH_PackingType").text,
+    "packing": packing,
 
     "energy":energy
 
@@ -89,7 +110,7 @@ def csv_dict_reader(file_obj):
     #     print(line["Name"])
 import re
 k = 0
-for i in range(1,545):
+for i in range(101,545):
     #0000 1 11 111
     print(i)
     if i > 99:
