@@ -57,6 +57,9 @@ public class MainListAdapter extends BaseAdapter {
                 .error(R.drawable.ic_launcher_foreground)
                 .into(photo);
 
+        if (items.get(i).getCount() != null)
+            ((TextView) view.findViewById(R.id.elementCount)).setText(String.valueOf(items.get(i).getCount()).concat(" шт "));
+
         final String barCodeItem = String.valueOf(items.get(i).getId());
 
         view.setOnClickListener(new View.OnClickListener() {

@@ -15,10 +15,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.lifelaboratory.skb.Entity.Item;
 import ru.lifelaboratory.skb.REST.User;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -51,6 +56,9 @@ public class ProfileActivity extends AppCompatActivity {
     Dialog registerDialog = null;
     View mainView = null;
     View dialogView = null;
+    ArrayList<Item> items = null;
+    MainListAdapter mainListAdapter = null;
+    ListView mainList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,28 @@ public class ProfileActivity extends AppCompatActivity {
         if (sp.getInt(Constants.USER_ID, -1) != -1) {
             ((LinearLayout) findViewById(R.id.ifNotAuth)).setVisibility(View.INVISIBLE);
             ((LinearLayout) findViewById(R.id.ifAuth)).setVisibility(View.VISIBLE);
+
+
+            // список покупок
+            items = new ArrayList<>();
+
+            mainListAdapter = new MainListAdapter(this, items);
+            mainList = (ListView) findViewById(R.id.lvMain);
+            mainList.setAdapter(mainListAdapter);
+            mainListAdapter.notifyDataSetChanged();
+
+            ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+            toServerItem.sales(sp.getInt(Constants.USER_ID, -1))
+                    .enqueue(new Callback<List<Item>>() {
+                        @Override
+                        public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                            items.clear();
+                            items.addAll(response.body());
+                            mainListAdapter.notifyDataSetChanged();
+                        }
+                        @Override
+                        public void onFailure(Call<List<Item>> call, Throwable t) { }
+                    });
         }
 
 

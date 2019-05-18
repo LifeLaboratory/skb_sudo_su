@@ -13,6 +13,7 @@ public class Item {
     private String gmo;
     private String packing;
     private String energy;
+    private Integer count;
 
     public String getTitle() {
         return name;
@@ -112,5 +113,13 @@ public class Item {
 
     public void setEnergy(String energy) {
         this.energy = energy;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }
