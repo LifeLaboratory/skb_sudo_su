@@ -1,18 +1,18 @@
 # coding=utf-8
 from app.api.base import base_name as names
-from app.api.src.info import *
+from app.api.src.nomenclature import *
 from app.api.base.base_router import BaseRouter
 
 
-class Info(BaseRouter):
+class NomenclatureList(BaseRouter):
 
     def __init__(self):
         super().__init__()
-        self.args = [names.QUERY]
+        self.args = []
 
-    def get(self, id_nom):
+    def get(self, page):
         args = {
-            names.ID_NAME: id_nom
+            names.PAGE: page
         }
-        answer = get_info(args)
+        answer = get_list(args)
         return answer

@@ -1,5 +1,3 @@
-import app.api.base.base_name as names
-import app.api.base.base_errors as errors
 from app.api.base.base_sql import Sql
 
 

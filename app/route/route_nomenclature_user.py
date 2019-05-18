@@ -1,18 +1,19 @@
 # coding=utf-8
 from app.api.base import base_name as names
-from app.api.src.sales import *
+from app.api.src.nomenclature import *
 from app.api.base.base_router import BaseRouter
 
 
-class Sales(BaseRouter):
+class NomenclatureUser(BaseRouter):
 
     def __init__(self):
         super().__init__()
-        self.args = [names.LOGIN, names.PASSWORD]
+        self.args = []
 
-    def get(self, id_user):
+    def get(self, page, id_user):
         args = {
+            names.PAGE: page,
             names.ID_USER: id_user
         }
-        return get_sales_user(args)
-
+        answer = get_user_list(args)
+        return answer

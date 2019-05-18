@@ -1,21 +1,19 @@
 # coding=utf-8
-from app.api.base import base_name as names, base_errors as errors
-from app.api.src.authentication import auth
-from flask_restful import Resource
+from app.api.base import base_name as names
+from app.api.src.search import *
+from app.api.base.base_router import BaseRouter
 
 
-class Search(Resource):
-    args = [names.LOGIN, names.PASSWORD, names.PAGE]
+class Search(BaseRouter):
 
-    def post(self):
-        error, data = self.parse_data()
-        if error == errors.OK:
-            error, answer = auth(data)
-            if error == errors.OK:
-                return answer, {'Access-Control-Allow-Origin': '*'}
-        return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}
+    def __init__(self):
+        super().__init__()
+        self.args = [names.QUERY]
 
-    def options(self):
-        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*',
-                                 'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,OPTIONS',
-                                 'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type'}
+    def get(self, field, query):
+        args = {
+            names.FIELD: field,
+            names.QUERY: query
+        }
+        answer = search_nom(args)
+        return answer
