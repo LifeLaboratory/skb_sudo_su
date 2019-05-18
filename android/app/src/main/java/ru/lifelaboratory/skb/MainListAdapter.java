@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -55,6 +58,7 @@ public class MainListAdapter extends BaseAdapter {
 
     boolean deleteSaleStatus = false;
     boolean deleteListStatus = false;
+    long time = 0;
 
     public void setDeleteStatus(boolean deleteStatus) {
         this.deleteSaleStatus = deleteStatus;
@@ -147,6 +151,16 @@ public class MainListAdapter extends BaseAdapter {
                     haveDialog.setContentView(R.layout.dialog_add_to_have);
                     if (MainListAdapter.this.deleteListStatus) {
                         ((TextView) haveDialog.findViewById(R.id.title_dialog)).setText("Удалить из моего списка?");
+                        ((CalendarView) haveDialog.findViewById(R.id.calendar_dialog)).setVisibility(View.GONE);
+                    } else {
+                        ((CalendarView) haveDialog.findViewById(R.id.calendar_dialog)).setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                            @Override
+                            public void onSelectedDayChange(CalendarView calendarView, int year, int month, int dayOfMonth) {
+                                Date date= new Date(year, month, dayOfMonth);
+                                time = date.getTime();
+                                Toast.makeText(ctx.getApplicationContext(), String.valueOf(time), Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                     haveDialog.show();
 
@@ -164,7 +178,7 @@ public class MainListAdapter extends BaseAdapter {
                                 SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
                                 if (sp.getInt(Constants.USER_ID, -1) != -1) {
                                     ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
-                                    toServerItem.addToNomenclature(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId()))
+                                    toServerItem.addToNomenclature(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId(), time))
                                             .enqueue(new Callback<ru.lifelaboratory.skb.Entity.Item>() {
                                                 @Override
                                                 public void onResponse(Call<Item> call, Response<Item> response) {

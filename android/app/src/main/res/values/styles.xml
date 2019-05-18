@@ -12,4 +12,18 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="CalenderViewCustom" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/colorSubPrimary</item>
+        <item name="colorPrimary">#fff</item>
+    </style>
+
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">#fff</item>
+        <item name="android:weekNumberColor">#fff</item>
+    </style>
+
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">#fff</item>
+    </style>
+
 </resources>

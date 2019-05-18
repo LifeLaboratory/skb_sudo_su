@@ -4,10 +4,17 @@ public class AddItem {
 
     private Integer id_user;
     private Integer id_nom;
+    private long expired_start;
 
     public AddItem(Integer idUser, Integer idNom) {
         this.id_user = idUser;
         this.id_nom = idNom;
+    }
+
+    public AddItem(Integer idUser, Integer idNom, long expiredStart) {
+        this.id_user = idUser;
+        this.id_nom = idNom;
+        this.expired_start = expiredStart;
     }
 
     public Integer getIdNom() {
@@ -24,5 +31,13 @@ public class AddItem {
 
     public void setIdUser(Integer id_user) {
         this.id_user = id_user;
+    }
+
+    public long getExpiredStart() {
+        return expired_start;
+    }
+
+    public void setExpiredStart(long expiredStart) {
+        this.expired_start = expiredStart;
     }
 }

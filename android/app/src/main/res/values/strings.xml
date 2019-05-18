@@ -18,7 +18,7 @@
     <string name="register_dialog_title">Регистрация</string>
     <string name="sale_list_title">Список покупок</string>
     <string name="add_to_sale">Добавить в список покупок?</string>
-    <string name="add_to_have">Добавить в холодильник?</string>
+    <string name="add_to_have">Добавить в холодильник с датой производства?</string>
     <string name="btn_yes">Да</string>
     <string name="btn_no">Нет</string>
     <string name="title_activity_item_info">Информация о товаре</string>
