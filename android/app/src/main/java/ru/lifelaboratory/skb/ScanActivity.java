@@ -1,5 +1,6 @@
 package ru.lifelaboratory.skb;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,8 +33,11 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 
     @Override
     public void handleResult(Result rawResult) {
-        Log.v("BarcodeResult", rawResult.getText()); // Prints scan results
+        Log.v("BarcodeResult", rawResult.getText());
         mScannerView.stopCamera();
+        Intent toItemInfo = new Intent(ScanActivity.this, ItemInfoActivity.class);
+        toItemInfo.putExtra(Constants.ITEM_ID, rawResult.getText());
+        startActivity(toItemInfo);
     }
 
 }
