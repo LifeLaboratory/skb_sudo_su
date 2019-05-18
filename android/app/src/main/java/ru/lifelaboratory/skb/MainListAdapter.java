@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -133,6 +134,21 @@ public class MainListAdapter extends BaseAdapter {
                             }
                         } else {
                             // TODO: удаление с сервера
+                            SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                            ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                            toServerItem.deleteFromSale(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId()))
+                                    .enqueue(new Callback<Item>() {
+                                        @Override
+                                        public void onResponse(Call<Item> call, Response<Item> response) {
+                                            items.remove(numItem);
+                                            Toast.makeText(ctx, numItem.toString(), Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Item> call, Throwable t) {
+                                            Toast.makeText(ctx, "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                         }
                         saleDialog.cancel();
                     }
