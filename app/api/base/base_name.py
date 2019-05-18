@@ -3,6 +3,7 @@ ERROR = "Error"
 OK = "Ok"
 SUCCESS = "Success"
 ANSWER = "Answer"
+SESSION = 'session'
 
 DESCRIPTION = "Description"
 DATA = "data"

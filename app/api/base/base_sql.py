@@ -1,8 +1,8 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-import auth.api.base.base_errors as errors
-from auth.config.config import DATABASE
+import app.api.base.base_errors as errors
+from app.config.config import DATABASE
 
 
 class Sql:
@@ -52,7 +52,7 @@ class Sql:
 
     @staticmethod
     def _query_exec_args(query, args):
-        query.format(**args)
+        query = query.format(**args)
         return Sql._exec(query)
 
     @staticmethod
@@ -70,6 +70,7 @@ class Sql:
             return errors.SQL_ERROR
         try:
             current_connect.execute(query)
+            connect.commit()
         except psycopg2.Error as e:
             print(e.pgerror)
             print(e.diag.message_primary)

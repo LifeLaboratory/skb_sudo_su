@@ -4,7 +4,7 @@ from app.api.src.authentication import auth
 from flask_restful import Resource
 
 
-class Session(Resource):
+class Info(Resource):
     args = [names.LOGIN, names.PASSWORD, names.PAGE]
 
     def post(self):

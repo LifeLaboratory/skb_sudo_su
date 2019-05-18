@@ -6,14 +6,13 @@ class BaseRouter(Resource):
     _args = []
 
     def __init__(self):
-        self.__args = None
+        self.args = None
         self.data = dict()
 
         self._parser = reqparse.RequestParser()
-        self._read_args()
 
     def _read_args(self):
-        for arg in self._args:
+        for arg in self.args:
             self._parser.add_argument(arg)
         self.data = self._parser.parse_args()
 
