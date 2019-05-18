@@ -6,11 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
-    private TextView mTextMessage;
+import ru.lifelaboratory.skb.Entity.Item;
+
+public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -19,18 +23,15 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_main: {
-                    mTextMessage.setText(R.string.title_main);
                     Intent toMainActivity = new Intent(MainActivity.this, MainActivity.class);
                     startActivity(toMainActivity);
                     return true;
                 }
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
                     Intent toProfileActivity = new Intent(MainActivity.this, ProfileActivity.class);
                     startActivity(toProfileActivity);
                     return true;
                 case R.id.navigation_search:
-                    mTextMessage.setText(R.string.title_search);
                     Intent toSearchActivity = new Intent(MainActivity.this, SearchActivity.class);
                     startActivity(toSearchActivity);
                     return true;
@@ -39,14 +40,27 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    MainListAdapter mainListAdapter = null;
+    ListView mainList = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        // основной список
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(new Item("Один"));
+        items.add(new Item("Два"));
+        items.add(new Item("Три"));
+
+        mainListAdapter = new MainListAdapter(this, items);
+        mainList = (ListView) findViewById(R.id.lvMain);
+        mainList.setAdapter(mainListAdapter);
+        mainListAdapter.notifyDataSetChanged();
     }
 
 }
