@@ -1,7 +1,9 @@
 package ru.lifelaboratory.skb;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -60,6 +62,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         mainView = (View) findViewById(R.id.container);
 
+
+        SharedPreferences sp = getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+        if (sp.getInt(Constants.USER_ID, -1) != -1) {
+
+        }
+
+
         // авторизация
         ((Button) findViewById(R.id.btn_login)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +96,11 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<ru.lifelaboratory.skb.Entity.User> call, Response<ru.lifelaboratory.skb.Entity.User> response) {
                                 if (response.body().getId() != null) {
+                                    SharedPreferences sp = getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor e = sp.edit();
+                                    e.putInt(Constants.USER_ID, response.body().getId());
+                                    e.apply();
+
                                     Snackbar.make(mainView, "Авторизация прошла успешно", Snackbar.LENGTH_LONG).show();
                                     authDialog.cancel();
                                     // TODO: сохранение данных в память телефона
@@ -162,6 +176,18 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        ((Button) findViewById(R.id.btn_exit)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sp = getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                SharedPreferences.Editor e = sp.edit();
+                e.remove(Constants.USER_ID);
+                e.apply();
+                ((LinearLayout) findViewById(R.id.ifNotAuth)).setVisibility(View.VISIBLE);
+                ((LinearLayout) findViewById(R.id.ifAuth)).setVisibility(View.INVISIBLE);
             }
         });
     }
