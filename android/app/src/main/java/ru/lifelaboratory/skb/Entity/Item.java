@@ -14,6 +14,8 @@ public class Item {
     private String packing;
     private String energy;
     private Integer count;
+    private Integer id_sales;
+    private Integer id_user_nom;
 
     public String getTitle() {
         return name;
@@ -121,5 +123,21 @@ public class Item {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public Integer getId_sales() {
+        return id_sales;
+    }
+
+    public void setId_sales(Integer id_sales) {
+        this.id_sales = id_sales;
+    }
+
+    public Integer getId_user_nom() {
+        return id_user_nom;
+    }
+
+    public void setId_user_nom(Integer id_user_nom) {
+        this.id_user_nom = id_user_nom;
     }
 }

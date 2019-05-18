@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import ru.lifelaboratory.skb.Entity.AddItem;
+import ru.lifelaboratory.skb.Entity.DeleteItem;
 
 public interface Item {
     @GET("/search/{type}/{item}")
@@ -28,6 +29,10 @@ public interface Item {
 
     @POST("/nomenclature")
     Call <ru.lifelaboratory.skb.Entity.Item> addToNomenclature(@Body AddItem item);
-    @DELETE("/sales")
-    Call <ru.lifelaboratory.skb.Entity.Item> deleteFromSale(@Body AddItem item);
+
+    @DELETE("/sales/{id_user}/{id_sales}")
+    Call <ru.lifelaboratory.skb.Entity.Item> deleteFromSale(@Path("id_user") Integer id_user, @Path("id_sales") Integer id_sales);
+
+    @DELETE("/nomenclature/{id_user}/{id_sales}")
+    Call <ru.lifelaboratory.skb.Entity.Item> deleteFromNom(@Path("id_user") Integer id_user, @Path("id_sales") Integer id_sales);
 }

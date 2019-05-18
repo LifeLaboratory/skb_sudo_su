@@ -24,6 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.lifelaboratory.skb.Entity.AddItem;
+import ru.lifelaboratory.skb.Entity.DeleteItem;
 import ru.lifelaboratory.skb.Entity.Item;
 
 public class MainListAdapter extends BaseAdapter {
@@ -139,11 +140,10 @@ public class MainListAdapter extends BaseAdapter {
                             // TODO: удаление с сервера
                             SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
                             ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
-                            toServerItem.deleteFromSale(new AddItem(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId()))
+                            toServerItem.deleteFromSale(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId_sales())
                                     .enqueue(new Callback<Item>() {
                                         @Override
                                         public void onResponse(Call<Item> call, Response<Item> response) {
-                                            items.remove(numItem);
                                             Toast.makeText(ctx, numItem.toString(), Toast.LENGTH_SHORT).show();
                                         }
 
@@ -206,6 +206,19 @@ public class MainListAdapter extends BaseAdapter {
                                 }
                             } else {
                                 // TODO: удалить из моего списка с сервера
+                                SharedPreferences sp = ctx.getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+                                ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+                                toServerItem.deleteFromNom(sp.getInt(Constants.USER_ID, -1), items.get(numItem).getId_user_nom())
+                                        .enqueue(new Callback<Item>() {
+                                            @Override
+                                            public void onResponse(Call<Item> call, Response<Item> response) {
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Item> call, Throwable t) {
+                                                Toast.makeText(ctx, "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                             }
                             haveDialog.cancel();
                         }
