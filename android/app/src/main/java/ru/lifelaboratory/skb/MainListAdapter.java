@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,12 @@ public class MainListAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.item_for_main_list, viewGroup, false);
         }
         ((TextView) view.findViewById(R.id.elementTitle)).setText(items.get(i).getTitle());
+        ImageView photo = (ImageView)view.findViewById(R.id.elementImg);
+        Picasso.with(this.ctx)
+                .load(items.get(0).getImg())
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(photo);
         return view;
     }
 }

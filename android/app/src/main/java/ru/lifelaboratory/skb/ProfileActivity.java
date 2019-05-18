@@ -65,7 +65,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         SharedPreferences sp = getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
         if (sp.getInt(Constants.USER_ID, -1) != -1) {
-
+            ((LinearLayout) findViewById(R.id.ifNotAuth)).setVisibility(View.INVISIBLE);
+            ((LinearLayout) findViewById(R.id.ifAuth)).setVisibility(View.VISIBLE);
         }
 
 
@@ -106,7 +107,6 @@ public class ProfileActivity extends AppCompatActivity {
                                     // TODO: сохранение данных в память телефона
                                     ((LinearLayout) findViewById(R.id.ifNotAuth)).setVisibility(View.INVISIBLE);
                                     ((LinearLayout) findViewById(R.id.ifAuth)).setVisibility(View.VISIBLE);
-                                    LinearLayout ifNotAuth = findViewById(R.id.ifNotAuth);
                                 } else {
                                     Snackbar.make(mainView, "Ошибка авторизации ", Snackbar.LENGTH_LONG).show();
                                 }
