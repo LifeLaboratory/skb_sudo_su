@@ -7,16 +7,13 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import ru.lifelaboratory.skb.Entity.Item;
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     MainListAdapter mainListAdapter = null;
     ListView mainList = null;
+    public static Retrofit server = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(toScan);
             }
         });
+
+        server = new Retrofit.Builder()
+                .baseUrl(Constants.SERVER)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         // основной список
         ArrayList<Item> items = new ArrayList<>();
