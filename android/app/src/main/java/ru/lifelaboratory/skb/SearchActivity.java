@@ -79,6 +79,7 @@ public class SearchActivity extends AppCompatActivity {
                     search.search(type, whatToSearch).enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
                         @Override
                         public void onResponse(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Response<List<ru.lifelaboratory.skb.Entity.Item>> response) {
+                            items.clear();
                             items.addAll(response.body());
                             mainListAdapter.notifyDataSetChanged();
                         }
