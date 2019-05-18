@@ -51,7 +51,7 @@ public class MainListAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.elementTitle)).setText(items.get(i).getTitle());
         ImageView photo = (ImageView)view.findViewById(R.id.elementImg);
         Picasso.with(this.ctx)
-                .load(items.get(0).getImg())
+                .load(items.get(i).getImg())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(photo);
