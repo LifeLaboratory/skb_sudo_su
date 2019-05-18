@@ -1,7 +1,9 @@
 package ru.lifelaboratory.skb;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,10 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.lifelaboratory.skb.Entity.Item;
+import ru.lifelaboratory.skb.REST.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     public static Retrofit server = null;
     Dialog saleDialog = null;
     Dialog haveDialog = null;
+    ArrayList<Item> items = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +77,33 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // основной список
-        ArrayList<Item> items = new ArrayList<>();
-        items.add(new Item("Один"));
-        items.add(new Item("Два"));
-        items.add(new Item("Три"));
+        items = new ArrayList<>();
 
         mainListAdapter = new MainListAdapter(this, items);
         mainList = (ListView) findViewById(R.id.lvMain);
         mainList.setAdapter(mainListAdapter);
         mainListAdapter.notifyDataSetChanged();
+
+        SharedPreferences sp = getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+        if (sp.getInt(Constants.USER_ID, -1) != -1) {
+            ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+            toServerItem.getUserList(0, sp.getInt(Constants.USER_ID, -1))
+                    .enqueue(new Callback<List<Item>>() {
+                        @Override
+                        public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                            items.clear();
+                            items.addAll(response.body());
+                            mainListAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Item>> call, Throwable t) {
+
+                        }
+                    });
+
+        }
+
 
         mainList.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this){
             public void onSwipeRight() {
@@ -105,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwipeLeft() {
                 // свайп справа налево, добавление в список наличия
                 haveDialog = new Dialog(MainActivity.this);
-                haveDialog.setTitle("Вход");
+                haveDialog.setTitle("Добавить");
                 haveDialog.setContentView(R.layout.dialog_add_to_have);
                 haveDialog.show();
 
