@@ -15,4 +15,4 @@ class Info(BaseRouter):
             names.ID_NAME: id_nom
         }
         answer = get_info(args)
-        return answer
+        return answer or {}

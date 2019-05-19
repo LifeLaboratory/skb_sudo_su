@@ -7,8 +7,9 @@ class Provider:
         query = """
   select 1
   from users
-  where "login" = '{login}'
+  where ("login" = '{login}'
     and "password" = '{password}'
+    )
         """
         return Sql.exec(query=query, args=args)
 
@@ -16,7 +17,9 @@ class Provider:
     def register_user(args):
         query = """
     insert into "users"("login", "password", "name") 
-    VALUES ('{login}', '{password}', '{name}')
+    VALUES ('{login}', 
+    '{password}', 
+    '{name}')
     returning id_user
     """
         print(query)

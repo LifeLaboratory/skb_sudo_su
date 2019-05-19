@@ -11,5 +11,9 @@ class Register(BaseRouter):
 
     def post(self):
         self._read_args()
+        if ' ' in self.data.get(names.LOGIN) \
+            or ' ' in self.data.get(names.PASSWORD) \
+            or ' ' in self.data.get(names.NAME):
+            return {}
         answer = register(self.data)
-        return answer
+        return answer or {}

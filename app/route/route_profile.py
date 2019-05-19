@@ -15,4 +15,4 @@ class Profile(BaseRouter):
             names.ID_USER: id_user
         }
         answer = get_profile(args)
-        return answer
+        return answer or {}

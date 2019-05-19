@@ -17,13 +17,13 @@ class NomenclatureUserAdd(BaseRouter):
 
     def put(self):
         self._read_args()
-        return update_nom_in_user(self.data)
+        return update_nom_in_user(self.data) or {}
 
     def delete(self, id_user, id_user_nom):
         args = {
             names.ID_USER: id_user,
             names.ID_USER_NOM: id_user_nom
         }
-        return delete_nom_in_user(args)
+        return delete_nom_in_user(args) or {}
 
 

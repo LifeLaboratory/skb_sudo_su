@@ -20,6 +20,6 @@ class Statistic(BaseRouter):
             names.INTERVAL: interval
         }
         if method in ['top', 'all']:
-            return self.methods[method](args)
+            return self.methods[method](args) or {}
         else:
             return {}

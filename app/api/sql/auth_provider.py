@@ -7,8 +7,9 @@ class Provider:
         query = """
     select id_user
     from users
-    where "login" = '{login}'
+    where ("login" = '{login}'
       and "password" = '{password}'
+      )
                 """
         # print(query)
         return Sql.exec(query=query, args=args)

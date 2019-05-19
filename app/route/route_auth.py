@@ -12,5 +12,9 @@ class Auth(BaseRouter):
 
     def post(self):
         self._read_args()
-        answer = auth(self.data)
-        return answer
+        answer = {}
+        try:
+            answer = auth(self.data)
+        except:
+            pass
+        return answer or {}

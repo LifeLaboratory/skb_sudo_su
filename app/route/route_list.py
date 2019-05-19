@@ -10,6 +10,7 @@ from app.route.route_nomenclature_user_expired import NomenclatureUserExpired
 from app.route.route_nomenclature_user_add import NomenclatureUserAdd
 from app.route.route_nomenclature_user_delete import NomenclatureUserDelete
 from app.route.route_search import Search
+from app.route.route_search_ import Search_
 from app.route.route_session import Session
 from app.route.route_sales import Sales
 from app.route.route_sales_insert import SalesInsert
@@ -22,6 +23,7 @@ ROUTES = {
     Auth: '/auth',
     Profile: '/profile/<int:id_user>',
     Search: '/search/<string:field>/<string:query>',
+    Search_: '/search/<string:field>/',
     Info: '/info/<int:id_nom>',
     InfoUser: '/info/<int:id_nom>/<string:id_user>',
     NomenclatureList: '/get_list/<int:page>',
