@@ -221,16 +221,39 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 android:id="@+id/item_shelf_life"/>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="срок годности"
+                android:text="ГОСТ"
                 android:textSize="12dp"
                 android:textAlignment="center"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"/>
+            <include layout="@layout/item_divider" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="нет"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:id="@+id/item_expires"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Годен до"
+                android:textSize="12dp"
+                android:textAlignment="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"/>
+
+            <include layout="@layout/item_divider" />
 
         </LinearLayout>
     </ScrollView>

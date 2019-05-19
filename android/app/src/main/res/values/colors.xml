@@ -5,4 +5,5 @@
     <color name="colorAccent">#4a456e</color>
     <color name="colorSubPrimary">#f6c53a</color>
     <color name="colorSubPrimaryWithOpacity">#80f6c53a</color>
+    <color name="colorError">#ea625b</color>
 </resources>

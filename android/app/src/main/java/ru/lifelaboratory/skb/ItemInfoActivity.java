@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -70,9 +71,13 @@ public class ItemInfoActivity extends AppCompatActivity {
         mainView = (View) findViewById(R.id.container);
 
         Integer whatToSearch = getIntent().getIntExtra(Constants.ITEM_ID, -1);
+        boolean flag = getIntent().getBooleanExtra("Scanned", false);
         Log.e(Constants.LOG, String.valueOf(whatToSearch));
         Item search = MainActivity.server.create(Item.class);
-        search.info(whatToSearch.toString()).enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
+        SharedPreferences sp = getApplicationContext().getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
+        Integer user_id = -1;
+        if(!flag) user_id = sp.getInt(Constants.USER_ID, -1);
+        search.infoMyHaving(whatToSearch.toString(), user_id).enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
             @Override
             public void onResponse(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Response<List<ru.lifelaboratory.skb.Entity.Item>> response) {
                 if (response.body() == null) {
@@ -100,6 +105,14 @@ public class ItemInfoActivity extends AppCompatActivity {
                         ((TextView) findViewById(R.id.item_energy)).setText(response.body().get(0).getEnergy());
                     if (response.body().get(0).getShelfLife() != null)
                         ((TextView) findViewById(R.id.item_shelf_life)).setText(response.body().get(0).getShelfLife());
+                    if(response.body().get(0).getExpiredEnd() != null) {
+                        if (response.body().get(0).expired()){
+                            //Snackbar.make(mainView, "dct jr", Snackbar.LENGTH_SHORT).show();
+                            ((TextView) findViewById(R.id.item_expires)).setBackgroundColor(getResources().getColor(R.color.colorError));
+
+                        }
+                            ((TextView) findViewById(R.id.item_expires)).setText(response.body().get(0).getExpiredEnd());
+                    }
                 }
             }
 

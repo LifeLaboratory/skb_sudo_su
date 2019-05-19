@@ -17,6 +17,7 @@ public class Item {
     private String expired_end;
     private Integer id_sales;
     private Integer id_user_nom;
+    private boolean expired;
 
     public String getTitle() {
         return name;
@@ -148,5 +149,13 @@ public class Item {
 
     public void setId_user_nom(Integer id_user_nom) {
         this.id_user_nom = id_user_nom;
+    }
+
+    public boolean expired() {
+        return expired;
+    }
+
+    public void setExpired(boolean expired) {
+        expired = expired;
     }
 }

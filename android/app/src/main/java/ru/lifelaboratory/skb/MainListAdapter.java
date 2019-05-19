@@ -100,14 +100,14 @@ public class MainListAdapter extends BaseAdapter {
 
         final Integer numItem = i;
 
-        if (deleteSaleStatus) {
-            ((Button) view.findViewById(R.id.btn_have)).setVisibility(View.INVISIBLE);
-        }
+//        if (deleteSaleStatus) {
+//            ((Button) view.findViewById(R.id.btn_have)).setVisibility(View.VISIBLE);
+//        }
 
         ((Button) view.findViewById(R.id.btn_have)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!MainListAdapter.this.deleteSaleStatus) {
+                if (MainListAdapter.this.deleteSaleStatus) {
                     haveDialog = new Dialog(ctx);
                     haveDialog.setTitle("Добавить");
                     haveDialog.setContentView(R.layout.dialog_add_to_have);
@@ -120,7 +120,7 @@ public class MainListAdapter extends BaseAdapter {
                             public void onSelectedDayChange(CalendarView calendarView, int year, int month, int dayOfMonth) {
                                 Date date= new Date(year, month, dayOfMonth);
                                 time = date.getTime();
-                                Toast.makeText(ctx.getApplicationContext(), String.valueOf(time), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(ctx.getApplicationContext(), String.valueOf(time), Toast.LENGTH_LONG).show();
                             }
                         });
                     }
