@@ -37,12 +37,15 @@ class Provider:
       , dn.packing
       , dn.energy
       , id_user_nom
+      , expired_start::text
+      , expired_end::text
+      , expired
     from user_nom 
       left join nomenclature n using(id_nom)
       left join description_nom dn using(id_nom)
     where id_user = {id_user}
       and not "close"
-    order by name
+    order by expired_end, name
   ) nom
   limit 100 offset 100*{page}
   """
@@ -80,12 +83,16 @@ class Provider:
 
     @staticmethod
     def add_nom_in_user(args):
+        print(args)
         query = """
- insert into user_nom(id_user, id_nom, expired_end)
+ insert into user_nom(id_user, id_nom, 
+ expired_start, 
+ expired_end)
  select 
    {id_user}
    , {id_nom}
-   , now() + (
+   ,'{expired_start}'::timestamp
+   , '{expired_start}'::timestamp + (
               select shelf_life 
               from nomenclature 
               where id_nom = {id_nom} 

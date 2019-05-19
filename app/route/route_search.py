@@ -16,4 +16,4 @@ class Search(BaseRouter):
             names.QUERY: query
         }
         answer = search_nom(args)
-        return answer
+        return answer or {}

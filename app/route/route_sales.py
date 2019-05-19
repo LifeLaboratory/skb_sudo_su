@@ -14,5 +14,5 @@ class Sales(BaseRouter):
         args = {
             names.ID_USER: id_user
         }
-        return get_sales_user(args)
+        return get_sales_user(args) or {}
 

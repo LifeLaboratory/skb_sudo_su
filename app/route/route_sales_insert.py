@@ -12,8 +12,8 @@ class SalesInsert(BaseRouter):
 
     def post(self):
         self._read_args()
-        return add_sales_user(self.data)
+        return add_sales_user(self.data) or {}
 
     def put(self):
         self._read_args()
-        return get_sales_user(self.data)
+        return get_sales_user(self.data) or {}

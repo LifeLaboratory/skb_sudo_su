@@ -11,7 +11,8 @@ class Provider:
      , shelf_life::text
      , code
     from nomenclature
-    where lower("{field}") like lower('%{query}%')
+    where lower("{field}") like lower('%{query}%'
+    )
      """
         # print(query)
         return Sql.exec(query=query, args=args)

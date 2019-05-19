@@ -15,4 +15,4 @@ class NomenclatureList(BaseRouter):
             names.PAGE: page
         }
         answer = get_list(args)
-        return answer
+        return answer or {}

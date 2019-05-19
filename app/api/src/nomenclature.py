@@ -1,5 +1,6 @@
 from app.api.sql.nomenclature_provider import Provider
 from app.api.base import base_name as names
+import datetime
 
 
 def get_list(args):
@@ -22,6 +23,13 @@ def get_user_list_expired(args):
 
 def add_nom_in_user(args):
     provider = Provider()
+    if args.get(names.EXPIRED_START):
+        if args.get(names.EXPIRED_START) == 0 or args.get(names.EXPIRED_START) == '0':
+            args[names.EXPIRED_START] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            print(args.get(names.EXPIRED_START))
+            args[names.EXPIRED_START] = datetime.datetime.utcfromtimestamp(
+                int(str(args.get(names.EXPIRED_START))[:-3])).strftime('%Y-%m-%d %H:%M:%S')
     answer = provider.add_nom_in_user(args)
     return answer
 

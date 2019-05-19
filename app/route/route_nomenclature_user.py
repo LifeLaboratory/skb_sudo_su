@@ -16,4 +16,4 @@ class NomenclatureUser(BaseRouter):
             names.ID_USER: id_user
         }
         answer = get_user_list(args)
-        return answer
+        return answer or {}
