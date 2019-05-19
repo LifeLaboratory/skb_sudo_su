@@ -89,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
             mainListAdapter.setDeleteStatus(false);
             mainList.setAdapter(mainListAdapter);
             mainListAdapter.notifyDataSetChanged();
+            mainListAdapter.setDeleteStatus(true);
 
             ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
             toServerItem.sales(sp.getInt(Constants.USER_ID, -1))

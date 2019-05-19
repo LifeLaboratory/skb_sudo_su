@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -122,6 +123,12 @@ public class MainListAdapter extends BaseAdapter {
 //            ((Button) view.findViewById(R.id.btn_have)).setVisibility(View.VISIBLE);
 //        }
 
+        if (MainListAdapter.this.deleteListStatus) {
+            ((Button) view.findViewById(R.id.btn_have)).setText("Убрать из холодильника");
+        } else {
+            ((Button) view.findViewById(R.id.btn_have)).setText("В холодильник");
+        }
+
         ((Button) view.findViewById(R.id.btn_have)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,14 +138,15 @@ public class MainListAdapter extends BaseAdapter {
                     haveDialog.setContentView(R.layout.dialog_add_to_have);
                     if (MainListAdapter.this.deleteListStatus) {
                         ((TextView) haveDialog.findViewById(R.id.title_dialog)).setText("Удалить из моего списка?");
+                        ((Button) view.findViewById(R.id.btn_have)).setText("Убрать из холодильника");
                         ((CalendarView) haveDialog.findViewById(R.id.calendar_dialog)).setVisibility(View.GONE);
                     } else {
                         ((CalendarView) haveDialog.findViewById(R.id.calendar_dialog)).setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                             @Override
                             public void onSelectedDayChange(CalendarView calendarView, int year, int month, int dayOfMonth) {
-                                Date date= new Date(year, month, dayOfMonth);
-                                time = date.getTime();
-                                //Toast.makeText(ctx.getApplicationContext(), String.valueOf(time), Toast.LENGTH_LONG).show();
+                                GregorianCalendar calendar = new GregorianCalendar(year, month, dayOfMonth);
+                                time = calendar.getTime().getTime();
+                                Log.d(Constants.LOG, String.valueOf(time));
                             }
                         });
                     }
