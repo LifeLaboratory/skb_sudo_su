@@ -86,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             mainListAdapter = new MainListAdapter(this, items);
             mainList = (ListView) findViewById(R.id.lvMain);
-            mainListAdapter.setDeleteStatus(true);
+            mainListAdapter.setDeleteStatus(false);
             mainList.setAdapter(mainListAdapter);
             mainListAdapter.notifyDataSetChanged();
 

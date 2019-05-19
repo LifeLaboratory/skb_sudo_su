@@ -107,7 +107,7 @@ public class MainListAdapter extends BaseAdapter {
         ((Button) view.findViewById(R.id.btn_have)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (MainListAdapter.this.deleteSaleStatus) {
+                if (!MainListAdapter.this.deleteSaleStatus) {
                     haveDialog = new Dialog(ctx);
                     haveDialog.setTitle("Добавить");
                     haveDialog.setContentView(R.layout.dialog_add_to_have);
