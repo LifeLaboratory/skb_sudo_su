@@ -9,5 +9,8 @@ def get_info(args):
 
 def get_info_user(args):
     provider = Provider()
-    answer = provider.get_info(args)
-    return answer
+    if args.get('id_user') == -1:
+        answer = provider.get_info(args)
+    else:
+        answer = provider.get_info_user(args)
+    return answer or {}

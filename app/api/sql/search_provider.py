@@ -15,3 +15,12 @@ class Provider:
      """
         # print(query)
         return Sql.exec(query=query, args=args)
+
+    @staticmethod
+    def update_category(args):
+        sql = """ Update nomenclature 
+      set category = '{category}'
+      where id_nom = {id_nom}
+                """
+        # print(sql)
+        Sql.exec(query=sql, args=args)
