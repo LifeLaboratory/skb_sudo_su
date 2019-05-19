@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -87,6 +88,14 @@ public class MainListAdapter extends BaseAdapter {
             ((TextView) view.findViewById(R.id.elementCount)).setText(String.valueOf(items.get(i).getCount()).concat(" шт "));
 
         final Integer barCodeItem = items.get(i).getId();
+
+
+        if (items.get(i).getExpiredEnd() != null) {
+            ((TextView) view.findViewById(R.id.elementDateEnd)).setText(items.get(i).getExpiredEnd());
+            if (items.get(i).expired()) {
+                view.setBackgroundColor(ctx.getResources().getColor(R.color.colorError));
+            }
+        }
 
         ((TextView) view.findViewById(R.id.elementTitle)).setOnClickListener(new View.OnClickListener() {
             @Override
