@@ -106,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     });
+        } else {
+            Intent toAuth = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(toAuth);
         }
 
         if (sp.getInt(Constants.USER_ID, -1) != -1) {
