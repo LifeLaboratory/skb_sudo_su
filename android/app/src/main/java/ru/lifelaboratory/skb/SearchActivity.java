@@ -80,6 +80,7 @@ public class SearchActivity extends AppCompatActivity {
         items = new ArrayList<>();
         mainList = (ListView) findViewById(R.id.lvsearch);
         mainListAdapter = new MainListAdapter(SearchActivity.this, items);
+        mainListAdapter.setIfSearch(true);
         mainList.setAdapter(mainListAdapter);
         searchView.setOnKeyListener(new View.OnKeyListener() {
             @Override

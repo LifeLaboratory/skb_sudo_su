@@ -77,6 +77,9 @@ public class ItemInfoActivity extends AppCompatActivity {
         SharedPreferences sp = getApplicationContext().getSharedPreferences(Constants.STORAGE, Context.MODE_PRIVATE);
         Integer user_id = -1;
         if(!flag) user_id = sp.getInt(Constants.USER_ID, -1);
+        if (getIntent().getBooleanExtra("SEARCH", false)) {
+            user_id = -1;
+        }
         search.infoMyHaving(whatToSearch.toString(), user_id).enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
             @Override
             public void onResponse(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Response<List<ru.lifelaboratory.skb.Entity.Item>> response) {

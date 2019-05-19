@@ -61,6 +61,12 @@ public class MainListAdapter extends BaseAdapter {
 
     boolean deleteSaleStatus = false;
     boolean deleteListStatus = false;
+    boolean ifSearch = false;
+
+    public void setIfSearch(boolean ifSearch) {
+        this.ifSearch = ifSearch;
+    }
+
     long time = 0;
 
     public void setDeleteStatus(boolean deleteStatus) {
@@ -94,6 +100,8 @@ public class MainListAdapter extends BaseAdapter {
             ((TextView) view.findViewById(R.id.elementDateEnd)).setText(items.get(i).getExpiredEnd());
             if (items.get(i).expired()) {
                 view.setBackgroundColor(ctx.getResources().getColor(R.color.colorError));
+            } else {
+                view.setBackgroundColor(Color.WHITE);
             }
         }
 
@@ -103,6 +111,7 @@ public class MainListAdapter extends BaseAdapter {
                 Intent toItemInfo = new Intent(ctx, ItemInfoActivity.class);
                 Log.d(Constants.LOG, barCodeItem.toString());
                 toItemInfo.putExtra(Constants.ITEM_ID, barCodeItem);
+                toItemInfo.putExtra("SEARCH", ifSearch);
                 ctx.startActivity(toItemInfo);
             }
         });
