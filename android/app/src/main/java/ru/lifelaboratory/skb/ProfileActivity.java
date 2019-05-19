@@ -160,6 +160,8 @@ public class ProfileActivity extends AppCompatActivity {
                                     // TODO: сохранение данных в память телефона
                                     ((LinearLayout) findViewById(R.id.ifNotAuth)).setVisibility(View.INVISIBLE);
                                     ((LinearLayout) findViewById(R.id.ifAuth)).setVisibility(View.VISIBLE);
+                                    Intent toMe = new Intent(ProfileActivity.this, ProfileActivity.class);
+                                    startActivity(toMe);
                                 } else {
                                     Snackbar.make(mainView, "Ошибка авторизации ", Snackbar.LENGTH_LONG).show();
                                 }
@@ -215,7 +217,8 @@ public class ProfileActivity extends AppCompatActivity {
                                             // TODO: сохранение данных в память телефона
                                             ((LinearLayout) findViewById(R.id.ifNotAuth)).setVisibility(View.INVISIBLE);
                                             ((LinearLayout) findViewById(R.id.ifAuth)).setVisibility(View.VISIBLE);
-                                            LinearLayout ifNotAuth = findViewById(R.id.ifNotAuth);
+                                            Intent toMe = new Intent(ProfileActivity.this, ProfileActivity.class);
+                                            startActivity(toMe);
                                         }
 
                                         @Override

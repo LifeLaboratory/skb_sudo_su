@@ -60,6 +60,22 @@ public class SearchActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        ru.lifelaboratory.skb.REST.Item toServerItem = MainActivity.server.create(ru.lifelaboratory.skb.REST.Item.class);
+        toServerItem.getList(0)
+                .enqueue(new Callback<List<ru.lifelaboratory.skb.Entity.Item>>() {
+                    @Override
+                    public void onResponse(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Response<List<ru.lifelaboratory.skb.Entity.Item>> response) {
+                        items.clear();
+                        items.addAll(response.body());
+                        mainListAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ru.lifelaboratory.skb.Entity.Item>> call, Throwable t) {
+
+                    }
+                });
+
         searchView = (EditText) findViewById(R.id.search);
         items = new ArrayList<>();
         mainList = (ListView) findViewById(R.id.lvsearch);

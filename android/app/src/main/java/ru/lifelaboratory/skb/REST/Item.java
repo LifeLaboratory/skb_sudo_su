@@ -9,7 +9,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import ru.lifelaboratory.skb.Entity.AddItem;
-import ru.lifelaboratory.skb.Entity.DeleteItem;
 
 public interface Item {
     @GET("/search/{type}/{item}")
@@ -17,6 +16,9 @@ public interface Item {
 
     @GET("/get_list/{page}/{id_user}")
     Call <List<ru.lifelaboratory.skb.Entity.Item>> getUserList(@Path("page") Integer page, @Path("id_user") Integer idUser);
+
+    @GET("/get_list/{page}")
+    Call <List<ru.lifelaboratory.skb.Entity.Item>> getList(@Path("page") Integer page);
 
     @GET("/get_list_expired/{id_user}")
     Call <List<ru.lifelaboratory.skb.Entity.Item>> getUserListForService(@Path("id_user") Integer idUser);
