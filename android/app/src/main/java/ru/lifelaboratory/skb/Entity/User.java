@@ -6,6 +6,7 @@ public class User {
     private String login;
     private String password;
     private String name;
+    private String img;
 
     public User(String login, String password) {
         this.login = login;
@@ -48,5 +49,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

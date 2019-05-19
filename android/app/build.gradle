@@ -20,6 +20,7 @@ android {
 repositories {
     jcenter()
     google()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -41,4 +42,7 @@ dependencies {
     implementation 'com.android.support:support-v4:28.0.0'
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.jjoe64:graphview:4.2.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
 }
