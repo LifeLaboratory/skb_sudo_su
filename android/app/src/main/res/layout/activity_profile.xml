@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ifNotAuth"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:visibility="visible">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_auth"
+            android:layout_margin="16dp"
+            android:id="@+id/btn_login"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorSubPrimary"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_register"
+            android:layout_margin="16dp"
+            android:id="@+id/btn_register"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorSubPrimary"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ifAuth"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:id="@+id/user_photo"
+                android:src="@drawable/profile"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textSize="24dp"
+                    android:layout_marginTop="16dp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:id="@+id/user_name"
+                    android:layout_height="match_parent"
+                    android:text="Имя пользователя"/>
+
+                <Button
+                    android:layout_gravity="right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_exit"
+                    android:layout_margin="16dp"
+                    android:id="@+id/btn_exit"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/colorSubPrimary"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="СТАТИСТИКА"
+            android:id="@+id/btn_staticstic"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorSubPrimary"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sale_list_title"
+            android:textSize="18dp"
+            android:textAlignment="center" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="56dp"
+            android:id="@+id/lvMain" />
+
+    </LinearLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation" />
+
+</RelativeLayout>

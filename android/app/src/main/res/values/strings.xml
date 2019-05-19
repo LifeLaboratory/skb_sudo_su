@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Просрочка</string>
+    <string name="title_search">Поиск</string>
+    <string name="title_main">Главная</string>
+    <string name="title_profile">Кабинет</string>
+    <string name="title_activity_profile">Кабинет</string>
+    <string name="title_activity_search">Поиск</string>
+    <string name="btn_scan">Сканировать</string>
+    <string name="btn_auth">Вход</string>
+    <string name="btn_exit">Выход</string>
+    <string name="btn_register">Регистрация</string>
+    <string name="btn_cancel">Отмена</string>
+    <string name="hint_login_text">Логин</string>
+    <string name="hint_name_text">Имя</string>
+    <string name="hint_password_text">Пароль</string>
+    <string name="hint_re_password_text">Повтор пароля</string>
+    <string name="auth_dialog_title">Вход</string>
+    <string name="register_dialog_title">Регистрация</string>
+    <string name="sale_list_title">Список покупок</string>
+    <string name="add_to_sale">Добавить в список покупок?</string>
+    <string name="add_to_have">Добавить в холодильник с датой производства?</string>
+    <string name="btn_yes">Да</string>
+    <string name="btn_no">Нет</string>
+    <string name="title_activity_item_info">Информация о товаре</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_statistic">Статистика</string>
+</resources>
