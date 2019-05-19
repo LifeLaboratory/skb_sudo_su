@@ -38,7 +38,7 @@
         android:layout_height="match_parent"
         android:id="@+id/ifAuth"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,6 +48,7 @@
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
+                android:id="@+id/user_photo"
                 android:src="@drawable/profile"/>
 
             <LinearLayout
@@ -60,6 +61,7 @@
                     android:layout_marginTop="16dp"
                     android:textStyle="bold"
                     android:layout_width="match_parent"
+                    android:id="@+id/user_name"
                     android:layout_height="match_parent"
                     android:text="Имя пользователя"/>
 
@@ -76,6 +78,15 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <Button
+            android:layout_gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="СТАТИСТИКА"
+            android:id="@+id/btn_staticstic"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorSubPrimary"/>
 
         <TextView
             android:layout_width="match_parent"
