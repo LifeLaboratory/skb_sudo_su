@@ -13,7 +13,7 @@ class InfoUser(BaseRouter):
     def get(self, id_nom, id_user):
         args = {
             names.ID_NAME: id_nom,
-            names.ID_USER: id_user
+            names.ID_USER: int(id_user)
         }
         answer = get_info_user(args)
         return answer

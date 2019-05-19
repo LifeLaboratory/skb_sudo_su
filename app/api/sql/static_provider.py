@@ -29,7 +29,7 @@ class Provider:
     @staticmethod
     def get_all_statistic(args):
         sql = """
-        select "процент_всего" as "percent", "всего" as "all", "просрочка" as "expired"
+        select "процент_всего" as "percent", "всего" - "просрочка" as "all", "просрочка" as "expired"
         from (
         select *
          , ("просрочка"::float / case when "всего" > 0 then "всего" else 1 end::float)::float "процент_всего"

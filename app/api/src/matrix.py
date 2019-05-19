@@ -126,5 +126,6 @@ def get_data(code):
     if id:
         data.update({"id":id[0].get("id_nom")})
         sql_second = """INSERT INTO description_nom("id_nom","description","gost","weight","storage_conditions","gmo","packing","energy")
-                   VALUES('{id}','{description}','{gost}','{weight}','{storage_conditions}','{gmo}','{packing}','{energy}')""".format(**data)
-        Sql.exec(sql_second)
+                   VALUES('{id}','{description}','{gost}','{weight}','{storage_conditions}','{gmo}','{packing}','{energy}')
+                   returning id_nom""".format(**data)
+        return Sql.exec(sql_second)

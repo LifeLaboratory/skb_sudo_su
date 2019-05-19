@@ -23,7 +23,7 @@ ROUTES = {
     Profile: '/profile/<int:id_user>',
     Search: '/search/<string:field>/<string:query>',
     Info: '/info/<int:id_nom>',
-    InfoUser: '/info/<int:id_nom>/<int:id_user>',
+    InfoUser: '/info/<int:id_nom>/<string:id_user>',
     NomenclatureList: '/get_list/<int:page>',
     NomenclatureUserAdd: '/nomenclature',
     NomenclatureUserDelete: '/nomenclature/<int:id_user>/<int:id_user_nom>',

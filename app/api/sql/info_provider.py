@@ -41,6 +41,7 @@ class Provider:
       , expired_start::text
       , expired_end::text
       , id_user_nom
+      , expired
      from user_nom
       left join nomenclature n using(id_nom)
       left join description_nom dn using(id_nom)
