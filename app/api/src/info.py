@@ -9,5 +9,5 @@ def get_info(args):
 
 def get_info_user(args):
     provider = Provider()
-    answer = provider.get_info(args)
+    answer = provider.get_info_user(args)
     return answer

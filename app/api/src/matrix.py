@@ -106,7 +106,10 @@ def get_data(code):
     "energy":energy
 
     }
-
+    try:
+        data['name'] = re.sub("'", "\''", data['name'])
+    except:
+        pass
     sql_first = """INSERT INTO nomenclature("name","img","shelf_life","code")
                    select 
                      '{name}',
