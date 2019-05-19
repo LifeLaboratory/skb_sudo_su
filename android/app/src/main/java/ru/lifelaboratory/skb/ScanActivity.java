@@ -53,6 +53,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                             if (response.body().size() != 0) {
                                 Intent toItemInfo = new Intent(ScanActivity.this, ItemInfoActivity.class);
                                 toItemInfo.putExtra(Constants.ITEM_ID, response.body().get(0).getId());
+                                toItemInfo.putExtra("Scanned", true);
                                 startActivity(toItemInfo);
                             } else {
                                 Toast.makeText(ScanActivity.this, "Нет информаци о товаре", Toast.LENGTH_SHORT).show();
